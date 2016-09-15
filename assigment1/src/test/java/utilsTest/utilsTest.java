@@ -36,6 +36,7 @@ public class utilsTest {
 	public void readGitPathsTest(){
 		List<String> listOfPathFiles = GitReader.readGitPaths("");
 		for(String file : listOfPathFiles){
+			assertFalse(file.isEmpty());
 			boolean expectedValue = PathFilters.checkPathFilterEnding(file, "java");
 			assertTrue(expectedValue);
 		}
