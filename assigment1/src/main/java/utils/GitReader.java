@@ -14,7 +14,7 @@ public class GitReader {
 	/**
 	 * Returns all the .java file paths from a remote git repository
 	 */
-	static List<String> readGitPaths(String path){
+	public static List<String> readGitPaths(String path){
 		List<String> listOfPaths = new ArrayList<String>();
 		String[] command = {"CMD", "/C", "git ls-files"};
 	    ProcessBuilder probuilder = new ProcessBuilder(command);

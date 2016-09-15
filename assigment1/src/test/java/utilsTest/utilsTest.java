@@ -1,8 +1,13 @@
 package utilsTest;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
+import utils.GitReader;
 import utils.PathFilters;
 
 public class utilsTest {
@@ -26,5 +31,13 @@ public class utilsTest {
 		assertFalse(expectedValue);
 	}
 	
+	@Test
+	public void readGitPathsTest(){
+		List<String> listOfPathFiles = GitReader.readGitPaths("C:\\Users\\Giannis Pap\\EclipseWorkspace\\testFile1");
+		for(String file : listOfPathFiles){
+			boolean expectedValue = PathFilters.checkPathFilterEnding(file, "java");
+			assertTrue(expectedValue);
+		}
+	}
 	
 }
