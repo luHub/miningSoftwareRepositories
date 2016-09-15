@@ -14,13 +14,13 @@ import java.util.Map;
 public class GitReader {
 
 	/**
-	 * Returns all the file paths in the Lucene's git repository
-	 **/
-	static List<String> readGitPaths(){
+	 * Returns all the .java file paths from a remote git repository
+	 */
+	public static List<String> readGitPaths(String path){
 		List<String> listOfPaths = new ArrayList<String>();
 		String[] command = {"CMD", "/C", "git ls-files"};
-	    ProcessBuilder probuilder = new ProcessBuilder( command );
-	    probuilder.directory(new File("C:\\Users\\Giannis Pap\\Lucene\\lucene-solr"));
+	    ProcessBuilder probuilder = new ProcessBuilder(command);
+	    probuilder.directory(new File(path));
 	    Process process;
         try {
             process = probuilder.start();
@@ -29,14 +29,19 @@ public class GitReader {
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
             String line;
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null && PathFilters.checkPathFilterEnding(line,"java")) {
                listOfPaths.add(line);
             }
+            int exitValue = process.waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             } catch (IOException ex) {
             	ex.printStackTrace();            
 			}
 	    return listOfPaths ;
-	}
+	    }
+	
+	
 	
 	
 	/**
