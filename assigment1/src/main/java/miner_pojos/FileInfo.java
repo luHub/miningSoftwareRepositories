@@ -4,18 +4,18 @@ public class FileInfo {
     
 	private String fileName;
     private String filePakage;
-    private double minor;
-    private double major;
-    private double totalCommits;
+    private int minor;
+    private int major;
+    private int totalContributors;
     private double numberOfBugs;
     private double owner;
 	
-    public FileInfo(String fileName, String filePakage, double minor, double major, double totalCommits,double numberOfBugs, double owner) {
+    public FileInfo(String fileName, String filePakage, int minor, int major, int totalContributors,double numberOfBugs, double owner) {
 		this.fileName = fileName;
 		this.filePakage = filePakage;
 		this.minor = minor;
 		this.major = major;
-		this.totalCommits = totalCommits;
+		this.totalContributors = totalContributors;
 		this.numberOfBugs = numberOfBugs;
 		this.owner = owner;
 	}
@@ -35,20 +35,20 @@ public class FileInfo {
 	public double getMinor() {
 		return minor;
 	}
-	public void setMinor(double minor) {
+	public void setMinor(int minor) {
 		this.minor = minor;
 	}
 	public double getMajor() {
 		return major;
 	}
-	public void setMajor(double major) {
+	public void setMajor(int major) {
 		this.major = major;
 	}
-	public double getTotalCommits() {
-		return totalCommits;
+	public double getTotalContributors() {
+		return totalContributors;
 	}
-	public void setTotalCommits(double totalCommits) {
-		this.totalCommits = totalCommits;
+	public void setTotalContributors(int totalCommits) {
+		this.totalContributors = totalCommits;
 	}
 	public double getNumberOfBugs() {
 		return numberOfBugs;
