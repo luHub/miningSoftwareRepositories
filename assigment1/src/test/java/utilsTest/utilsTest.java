@@ -1,14 +1,15 @@
 package utilsTest;
 
 import static org.junit.Assert.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
 import utils.GitReader;
 import utils.PathFilters;
+
+import utils.GitReader;
+
 
 public class utilsTest {
 
@@ -31,13 +32,21 @@ public class utilsTest {
 		assertFalse(expectedValue);
 	}
 	
-	@Test
+	//@Test
 	public void readGitPathsTest(){
-		List<String> listOfPathFiles = GitReader.readGitPaths("C:\\Users\\Giannis Pap\\EclipseWorkspace\\testFile1");
+		List<String> listOfPathFiles = GitReader.readGitPaths("");
 		for(String file : listOfPathFiles){
+			assertFalse(file.isEmpty());
 			boolean expectedValue = PathFilters.checkPathFilterEnding(file, "java");
 			assertTrue(expectedValue);
 		}
 	}
 	
+	/**
+	 * Reads commits from a fake git repository
+	 */
+	@Test
+	public void readFileCommitsTest() {
+		// Map<String,String> map = PathFilters.checkPathFilterEnding(path,extension);
+	}
 }
