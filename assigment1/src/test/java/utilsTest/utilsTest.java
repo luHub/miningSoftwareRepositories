@@ -8,10 +8,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import utils.GitReader;
 import utils.PathFilters;
 
-import utils.GitReader;
 
 
 public class utilsTest {
@@ -42,7 +40,7 @@ public class utilsTest {
 	 */
 	@Test
 	public void readGitPathsTest() throws IOException, InterruptedException{
-		List<String> listOfPathFiles = GitReader.readGitPaths("E:\\MiningRepositories\\workspace");
+		List<String> listOfPathFiles = GitReader.readGitPaths("C:\\Users\\Giannis Pap\\Lucene\\lucene-solr");
 		assertTrue("File Size is Zero",listOfPathFiles.size()>0);
 		for(String file : listOfPathFiles){
 			boolean expectedValue = PathFilters.checkPathFilterEnding(file, "java");
@@ -53,13 +51,15 @@ public class utilsTest {
 	/**
 	 * Reads commits from a fake git repository
 	 * @throws IOException 
+	 * @throws InterruptedException 
 	 */
 	@Test
-	public void readFileCommitsTest() throws IOException {
+	public void readFileCommitsTest() throws IOException, InterruptedException {
 		String since = "01-01-2001";
 		String until = "09-15-2016";
-		String path = "E:\\MiningRepositories\\workspace";
-		Map<String, String> map = GitReader.readFileCommitsFromDevelopers(path, since, until);
+		List<String> listOfPathFiles = GitReader.readGitPaths("C:\\Users\\Giannis Pap\\Lucene\\lucene-solr");
+		String path = listOfPathFiles.get(0);
+		Map<String, String> map = GitReader.readFileCommitsFromDevelopers("C:\\Users\\Giannis Pap\\Lucene\\lucene-solr","C:\\Users\\Giannis Pap\\"+path, since, until);
 		assertTrue("File Size is Zero",map.size()>0);
 		
 	}
