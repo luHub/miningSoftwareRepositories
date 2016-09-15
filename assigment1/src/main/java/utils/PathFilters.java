@@ -15,6 +15,6 @@ public class PathFilters {
 	public static boolean checkPathFilterEnding(String path,String extension){
 		return Pattern.matches(".*\\."+extension, path);
 	}
-	
-	
+
+
 }

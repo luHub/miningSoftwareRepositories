@@ -34,7 +34,7 @@ public class utilsTest {
 	
 	@Test
 	public void readGitPathsTest(){
-		List<String> listOfPathFiles = GitReader.readGitPaths("C:\\Users\\Giannis Pap\\EclipseWorkspace\\testFile1");
+		List<String> listOfPathFiles = GitReader.readGitPaths("");
 		for(String file : listOfPathFiles){
 			boolean expectedValue = PathFilters.checkPathFilterEnding(file, "java");
 			assertTrue(expectedValue);
