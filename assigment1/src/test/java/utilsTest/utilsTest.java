@@ -26,5 +26,11 @@ public class utilsTest {
 		assertFalse(expectedValue);
 	}
 	
-	
+	/**
+	 * Reads commits from a fake git repository
+	 */
+	@Test
+	public void readFileCommitsTest() {
+		// Map<String,String> map = PathFilters.checkPathFilterEnding(path,extension);
+	}
 }
