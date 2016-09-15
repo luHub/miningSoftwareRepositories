@@ -30,8 +30,9 @@ public class GitReader {
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
             String line;
-            while ((line = br.readLine()) != null && PathFilters.checkPathFilterEnding(line,"java")) {
-               listOfPaths.add(line);
+            while ((line = br.readLine()) != null) {
+               if(PathFilters.checkPathFilterEnding(line,"java"))	
+               {listOfPaths.add(line);}
             }
             int exitValue = process.waitFor();
             
