@@ -11,6 +11,9 @@ import java.util.List;
 
 public class GitReader {
 
+	/*
+	 * Returns all the file paths in the Lucene's git repository
+	 */
 	static List<String> readGitPaths(){
 		List<String> listOfPaths = new ArrayList<String>();
 		String[] command = {"CMD", "/C", "git ls-files"};
@@ -27,10 +30,6 @@ public class GitReader {
             while ((line = br.readLine()) != null) {
                listOfPaths.add(line);
             }
-            //Wait to get exit value
-            int exitValue = process.waitFor();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             } catch (IOException ex) {
             	ex.printStackTrace();            
 			}
