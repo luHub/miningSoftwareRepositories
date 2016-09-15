@@ -15,14 +15,15 @@ public class GitReader {
 
 	/**
 	 * Returns all the .java file paths from a remote git repository
+	 * @throws IOException 
+	 * @throws InterruptedException 
 	 */
-	public static List<String> readGitPaths(String path){
+	public static List<String> readGitPaths(String path) throws IOException, InterruptedException{
 		List<String> listOfPaths = new ArrayList<String>();
 		String[] command = {"CMD", "/C", "git ls-files"};
 	    ProcessBuilder probuilder = new ProcessBuilder(command);
 	    probuilder.directory(new File(path));
 	    Process process;
-        try {
             process = probuilder.start();
             //Read out dir output
             InputStream is = process.getInputStream();
@@ -33,11 +34,7 @@ public class GitReader {
                listOfPaths.add(line);
             }
             int exitValue = process.waitFor();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException ex) {
-            	ex.printStackTrace();            
-			}
+            
 	    return listOfPaths ;
 	    }
 	    
@@ -49,13 +46,13 @@ public class GitReader {
 	/**
 	 * Read from Git the using the shortlog command for a desired repository,
 	 * directly to a cache.
+	 * @throws IOException 
 	 */
-	public static Map<String, String> readFileCommitsFromDevelopers(String path, String since, String until) {
+	public static Map<String, String> readFileCommitsFromDevelopers(String path, String since, String until) throws IOException {
 		Map<String, String> devInformationMap = new HashMap<String, String>();
 		String[] command = { "CMD", "/C", "git shortlog -sn --since=" + since + "--until=" + until + " -p" + path };
 		ProcessBuilder probuilder = new ProcessBuilder(command);
 		probuilder.directory(new File(path));
-		try {
 			Process process = probuilder.start();
 			// Read out dir output
 			InputStream is = process.getInputStream();
@@ -67,9 +64,7 @@ public class GitReader {
 				String[] tokens = line.split("\\t+");
 				devInformationMap.put(tokens[0], tokens[1]);
 			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		
 		return devInformationMap;
 	}
 }

@@ -1,7 +1,10 @@
 package utilsTest;
 
 import static org.junit.Assert.*;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -32,11 +35,17 @@ public class utilsTest {
 		assertFalse(expectedValue);
 	}
 	
-	@Test
-	public void readGitPathsTest(){
-		List<String> listOfPathFiles = GitReader.readGitPaths("");
+	
+	/**
+	 * Reads the git information of this project to test log information
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	//@Test
+	public void readGitPathsTest() throws IOException, InterruptedException{
+		List<String> listOfPathFiles = GitReader.readGitPaths("E:\\MiningRepositories\\workspace");
+		assertTrue("File Size is Zero",listOfPathFiles.size()>0);
 		for(String file : listOfPathFiles){
-			assertFalse(file.isEmpty());
 			boolean expectedValue = PathFilters.checkPathFilterEnding(file, "java");
 			assertTrue(expectedValue);
 		}
@@ -44,9 +53,15 @@ public class utilsTest {
 	
 	/**
 	 * Reads commits from a fake git repository
+	 * @throws IOException 
 	 */
 	@Test
-	public void readFileCommitsTest() {
-		// Map<String,String> map = PathFilters.checkPathFilterEnding(path,extension);
+	public void readFileCommitsTest() throws IOException {
+		String since = "01-01-2001";
+		String until = "09-15-2016";
+		String path = "E:\\MiningRepositories\\workspace";
+		Map<String, String> map = GitReader.readFileCommitsFromDevelopers(path, since, until);
+		assertTrue("File Size is Zero",map.size()>0);
+		
 	}
 }
