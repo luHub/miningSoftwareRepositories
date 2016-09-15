@@ -35,13 +35,12 @@ public class utilsTest {
 		assertFalse(expectedValue);
 	}
 	
-	
 	/**
 	 * Reads the git information of this project to test log information
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	//@Test
+	@Test
 	public void readGitPathsTest() throws IOException, InterruptedException{
 		List<String> listOfPathFiles = GitReader.readGitPaths("E:\\MiningRepositories\\workspace");
 		assertTrue("File Size is Zero",listOfPathFiles.size()>0);
