@@ -19,7 +19,6 @@ public class FileInfo {
 		this.numberOfBugs = numberOfBugs;
 		this.owner = owner;
 	}
-	
    
 	public String getFileName() {
 		return fileName;
