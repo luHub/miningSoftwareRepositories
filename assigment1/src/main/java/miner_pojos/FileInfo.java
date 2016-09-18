@@ -62,4 +62,9 @@ public class FileInfo {
 	public void setOwner(double owner) {
 		this.owner = owner;
 	}
+	
+	@Override
+	public String toString(){
+		return fileName+","+filePakage+","+minor+","+major+","+totalContributors+","+owner+","+numberOfBugs;
+	}
 }

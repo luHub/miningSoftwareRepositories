@@ -8,26 +8,26 @@ public class CalculateTableInfo {
 	private final static double LOWER_LIMIT = 5.0;
 	private final static double ONE_HUNDRED_PERCENTAGE = 100.0;
 
-	public static int calculateTotalContributors(Map<String,String> devInformationMap){
+	public static int calculateTotalContributors(Map<String,Integer> devInformationMap){
 		return devInformationMap.size();
 	}
 	
-	public static int calculateTotalCommitsPerFile(Map<String,String> devInformationMap){
-		int totalCommits=0;
-		for (Map.Entry<String, String> entry : devInformationMap.entrySet())
+	public static double calculateTotalCommitsPerFile(Map<String,Integer> devInformationMap){
+		double totalCommits=0;
+		for (Map.Entry<String, Integer> entry : devInformationMap.entrySet())
 		{
-			 totalCommits += Integer.parseInt("entry.getKey()");
+			 totalCommits += entry.getValue();
 		}
 		
 		return totalCommits;
 	}
 	
 	
-	public static int calculateMinorContributors(Map<String,String> devInformationMap){
+	public static int calculateMinorContributors(Map<String,Integer> devInformationMap){
 		int minorCounter=0;
-		for (Map.Entry<String, String> entry : devInformationMap.entrySet())
+		for (Map.Entry<String, Integer> entry : devInformationMap.entrySet())
 		{
-			double proportion = (Integer.parseInt(entry.getKey()) * calculateTotalCommitsPerFile(devInformationMap))/ONE_HUNDRED_PERCENTAGE;
+			double proportion = (double)entry.getValue() / calculateTotalCommitsPerFile(devInformationMap);//ONE_HUNDRED_PERCENTAGE;
 			if(proportion < LOWER_LIMIT/ONE_HUNDRED_PERCENTAGE)
 				minorCounter++;
 		}
@@ -35,28 +35,29 @@ public class CalculateTableInfo {
 		return minorCounter;
 	}
 	
-	public static int calculateMajorContributors(Map<String,String> devInformationMap){
+	//TODO Check this method using a stub test to force each case
+	public static int calculateMajorContributors(Map<String,Integer> devInformationMap){
 		int majorCounter=0;
-		for (Map.Entry<String, String> entry : devInformationMap.entrySet())
+		for (Map.Entry<String, Integer> entry : devInformationMap.entrySet())
 		{
-			double proportion = (Integer.parseInt(entry.getKey()) * calculateTotalCommitsPerFile(devInformationMap))/ONE_HUNDRED_PERCENTAGE;
-			if(proportion >= LOWER_LIMIT/ONE_HUNDRED_PERCENTAGE && proportion < UPER_LIMIT/ONE_HUNDRED_PERCENTAGE)
+			double proportion = (double)(entry.getValue()) / calculateTotalCommitsPerFile(devInformationMap);//ONE_HUNDRED_PERCENTAGE;
+			if(proportion >= LOWER_LIMIT/ONE_HUNDRED_PERCENTAGE)
 				majorCounter++;
 		}
 		
 		return majorCounter;
 	}
 	
-	public static double calculateOwnership(Map<String,String> devInformationMap){
-		double ownerCounter=0;
-		for (Map.Entry<String, String> entry : devInformationMap.entrySet())
+	public static double calculateOwnership(Map<String,Integer> devInformationMap){
+		double ownerMaxProportion=0;
+		for (Map.Entry<String, Integer> entry : devInformationMap.entrySet())
 		{
-			double proportion = (Integer.parseInt(entry.getKey()) * calculateTotalCommitsPerFile(devInformationMap))/ONE_HUNDRED_PERCENTAGE;
-			if(proportion >= UPER_LIMIT/ONE_HUNDRED_PERCENTAGE)
-				ownerCounter += proportion;
+			double proportion = (double)(entry.getValue() / calculateTotalCommitsPerFile(devInformationMap));
+			if(proportion >= UPER_LIMIT/ONE_HUNDRED_PERCENTAGE && proportion > ownerMaxProportion )
+				ownerMaxProportion=proportion;
 		}
 		
-		return ownerCounter;
+		return ownerMaxProportion;
 	}
 	
 }
