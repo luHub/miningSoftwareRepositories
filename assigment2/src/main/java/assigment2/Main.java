@@ -1,0 +1,27 @@
+package assigment2;
+
+import br.com.metricminer2.MetricMiner2;
+import br.com.metricminer2.RepositoryMining;
+import br.com.metricminer2.Study;
+import br.com.metricminer2.persistence.csv.CSVFile;
+import br.com.metricminer2.scm.GitRepository;
+import br.com.metricminer2.scm.commitrange.Commits;
+
+public class Main  implements Study {
+	
+	
+	public static void main(String[]args){
+		new MetricMiner2().start(new Main());
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		new RepositoryMining()
+        .in(GitRepository.singleProject("E:\\MiningRepositories\\lune\\lucene-solr"))
+        .through(Commits.all())
+        .process(new DevelopersVisitor(), new CSVFile("E:\\MiningRepositories\\workspace\\assigment2\\devs.csv"))
+        .mine();
+	}
+
+}

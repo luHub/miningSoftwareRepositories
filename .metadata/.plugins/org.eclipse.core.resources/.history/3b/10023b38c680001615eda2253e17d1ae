@@ -1,0 +1,43 @@
+package cryptoOne;
+
+public class AssigmentI {
+
+	public static void exerciseOne() {
+
+		String enctypted = "CRBZQROSPCUEPUNDRKTPF";
+
+		String[] l1 = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
+				"T", "U", "V", "W", "X", "Y", "Z" };
+		String[] l2 = { "M", "V", "H", "T", "K", "N", "L", "W", "Q", "A", "G", "R", "U", "S", "Z", "P", "X", "B", "Y",
+				"O", "E", "J", "D", "I", "C", "F" };
+		String[] l3 = { "U", "K", "G", "V", "P", "I", "Y", "C", "L", "W", "M", "T", "F", "O", "R", "N", "H", "D", "Z",
+				"Q", "B", "E", "S", "X", "A", "J" };
+
+		String[] encryptedTokens = enctypted.split("");
+		StringBuilder decrypt = new StringBuilder();
+
+		
+		for (String token : encryptedTokens) {
+
+			for (int i = 0; i < l3.length; i++) {
+				if (l3[i].equals(token)) {
+					decrypt.append(l1[i]);
+					break;
+				}
+				for (int ii = 0; ii < l2.length; ii++) {
+					if (l2[ii].equals(token)) {
+						decrypt.append(l3[ii]);
+						break;
+					}
+					for (int iii = 0; iii < l1.length; iii++) {
+						if (l1[iii].equals(token)) {
+							decrypt.append(l2[iii]);
+							break;
+						}
+					}
+				}
+			}
+		}
+		System.out.println(decrypt.toString());
+	}
+}
