@@ -13,4 +13,16 @@
 <fullyQualifiedTypeName name="java.util.TreeMap"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="br.com.metricminer2.Study"/>
+<fullyQualifiedTypeName name="br.com.metricminer2.RepositoryMining"/>
+<fullyQualifiedTypeName name="br.com.metricminer2.scm.GitRepository"/>
+<fullyQualifiedTypeName name="br.com.metricminer2.scm.commitrange.Commits"/>
+<fullyQualifiedTypeName name="br.com.metricminer2.persistence.csv.CSVFile"/>
+<fullyQualifiedTypeName name="br.com.metricminer2.MetricMiner2"/>
+<fullyQualifiedTypeName name="java.net.URL"/>
+<fullyQualifiedTypeName name="java.net.HttpURLConnection"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="java.io.InputStreamReader"/>
+<fullyQualifiedTypeName name="java.net.MalformedURLException"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
 </qualifiedTypeNameHistroy>

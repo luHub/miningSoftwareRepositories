@@ -101,7 +101,7 @@ public class GitReader {
 	/**
 	 * Read from Git the using the shortlog command for a desired repository,
 	 * directly to a cache.
-	 * @param until2 
+	 * @param until
 	 * @throws IOException 
 	 * @throws InterruptedException 
 	 */
