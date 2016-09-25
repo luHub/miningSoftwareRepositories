@@ -186,6 +186,8 @@ public class GitReader {
 		
 		return devInformationMap;
 	}
+
+
 		
 		
 		

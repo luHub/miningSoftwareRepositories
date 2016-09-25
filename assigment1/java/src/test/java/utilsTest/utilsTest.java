@@ -13,6 +13,7 @@ import miner_pojos.FileInfo;
 import table_builder.TableInfoCreator;
 import utils.CalculateTableInfo;
 import utils.GitReader;
+import utils.JiraReader;
 import utils.PathFilters;
 
 
@@ -130,5 +131,10 @@ public class utilsTest {
 		}
 		assertTrue("File Info Test",tableInfo.size()>0);
 		
-	}	
+	}
+
+	@Test
+	public void jiraReaderTest(){
+		JiraReader.IsBug();
+	}
 }
