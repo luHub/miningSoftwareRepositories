@@ -2,95 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cc9b322d-8bbf-48ab-9752-cc5351cf96a6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__br_usp_metricminer_2_0_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_18_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_javaewah_JavaEWAH_0_7_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jcraft_jsch_0_1_50.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_thoughtworks_xstream_xstream_1_4_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_14.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_antlr4_runtime_4_5.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_3_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_1_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_core_org_eclipse_core_contenttype_3_4_100.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_core_org_eclipse_core_expressions_3_4_300.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_core_org_eclipse_core_filesystem_1_3_100.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_core_org_eclipse_core_jobs_3_5_100.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_core_org_eclipse_core_resources_3_7_100.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_core_org_eclipse_core_runtime_3_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_equinox_org_eclipse_equinox_app_1_3_100.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_equinox_org_eclipse_equinox_common_3_6_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_equinox_org_eclipse_equinox_preferences_3_4_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_equinox_org_eclipse_equinox_registry_3_5_101.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jgit_org_eclipse_jgit_3_4_1_201406201815_r.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_osgi_org_eclipse_osgi_3_7_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_tycho_org_eclipse_jdt_core_3_10_0_v20140604_1726.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xmlpull_xmlpull_1_1_3_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xpp3_xpp3_min_1_1_4c.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/101859552.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/1038375455.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/1118400457.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/115609362.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/1161133376.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/1726171323.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/1807708515.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/1848055543.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/1955396156.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2049562747.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2073072090.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/209704531.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/212146310.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2312479196.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2313689751.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2342434705.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/245362681.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2515991807.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2581800294.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2614636696.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2637500605.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2685168733.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/2960928983.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/3284199840.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/3459987949.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/3513681186.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/3580399154.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/3717965984.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/372502401.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/3754902773.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/392629630.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/3957405835.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/3965086872.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/3978991520.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/4179544177.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/418007678.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/4202174895.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/4209179570.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/4267077079.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/4284306501.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/506155031.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/655456310.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/765519375.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/860512003.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/866897987.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/914794356.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/959616932.index" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterPath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache" afterPath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/externalFilesCache" afterPath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/externalFilesCache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" afterPath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache" afterPath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat" afterPath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/.log" afterPath="$PROJECT_DIR$/../../.metadata/.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" afterPath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" afterPath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.pde.core/.cache/clean-cache.properties" afterPath="$PROJECT_DIR$/../../.metadata/.plugins/org.eclipse.pde.core/.cache/clean-cache.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.metadata/version.ini" afterPath="$PROJECT_DIR$/../../.metadata/version.ini" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../assigment1/java/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../../assigment1/java/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../assigment1/java/src/main/java/utils/JiraReader.java" afterPath="$PROJECT_DIR$/../../assigment1/java/src/main/java/utils/JiraReader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../assigment1/java/src/test/java/utilsTest/jiraTest.java" afterPath="$PROJECT_DIR$/../../assigment1/java/src/test/java/utilsTest/jiraTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/miner-util.iml" afterPath="$PROJECT_DIR$/miner-util.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/utils/JiraReader.java" afterPath="$PROJECT_DIR$/src/main/java/utils/JiraReader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/utilsTest/JiraTest.java" afterPath="$PROJECT_DIR$/src/test/java/utilsTest/JiraTest.java" />
     </list>
     <ignored path="miner-util.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -116,7 +35,39 @@
     <favorites_list name="miner-util" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file leaf-file-name="JiraTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/utilsTest/JiraTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JiraReader.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/utils/JiraReader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.7478849">
+              <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -130,8 +81,10 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/test/java/utilsTest/utilsTest.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/utils/GitReader.java" />
+        <option value="$PROJECT_DIR$/src/test/java/utilsTest/JiraTest.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/utils/JiraReader.java" />
       </list>
     </option>
   </component>
@@ -178,11 +131,11 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="Tests" />
       </pane>
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -216,32 +169,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="miner-util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="utilsTest" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -297,7 +224,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
-  <component name="RunManager" selected="JUnit.utilsTest">
+  <component name="RunManager" selected="JUnit.JiraTest">
     <configuration default="false" name="All in miner-util" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="miner-util" />
@@ -374,6 +301,32 @@
       <option name="MAIN_CLASS_NAME" value="utilsTest.utilsTest" />
       <option name="METHOD_NAME" value="calculateMajorInfoTest" />
       <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="JiraTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="utilsTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="miner-util" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="utilsTest" />
+      <option name="MAIN_CLASS_NAME" value="utilsTest.JiraTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -571,18 +524,20 @@
       <listeners />
       <method />
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="JUnit.All in miner-util" />
       <item index="1" class="java.lang.String" itemvalue="Application.main" />
       <item index="2" class="java.lang.String" itemvalue="JUnit.utilsTest" />
       <item index="3" class="java.lang.String" itemvalue="JUnit.utilsTest.calculateMajorInfoTest" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.JiraTest" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.utilsTest" />
-        <item index="1" class="java.lang.String" itemvalue="Application.main" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.utilsTest.calculateMajorInfoTest" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.All in miner-util" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="JUnit.JiraTest" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.utilsTest" />
+        <item index="2" class="java.lang.String" itemvalue="Application.main" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.utilsTest.calculateMajorInfoTest" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.All in miner-util" />
       </list>
     </recent_temporary>
   </component>
@@ -600,8 +555,8 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="utilsTest - 2016.09.18 at 22h 53m 09s.xml">
-      <configuration name="utilsTest" configurationId="JUnit" />
+    <history-entry file="JiraTest - 2016.09.25 at 16h 48m 03s.xml">
+      <configuration name="JiraTest" configurationId="JUnit" />
     </history-entry>
     <history-entry file="utilsTest - 2016.09.18 at 22h 53m 24s.xml">
       <configuration name="utilsTest" configurationId="JUnit" />
@@ -646,15 +601,15 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.4936034" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.4914712" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32936078" sideWeight="0.50852877" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32936078" sideWeight="0.510661" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.48507464" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.4914712" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32936078" sideWeight="0.48933902" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3033049" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3033049" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -695,7 +650,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -703,7 +657,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -711,7 +664,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -791,7 +743,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -806,7 +757,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="2.0388513">
           <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -814,14 +764,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.11486486">
           <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.90106004">
-          <caret line="30" column="20" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -843,7 +785,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.4957699">
           <caret line="62" column="7" selection-start-line="62" selection-start-column="7" selection-end-line="62" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -851,7 +792,34 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19458544">
           <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/utilsTest/JiraTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8814159">
+          <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/JiraReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7478849">
+          <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

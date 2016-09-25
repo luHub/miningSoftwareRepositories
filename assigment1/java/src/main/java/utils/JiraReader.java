@@ -59,8 +59,4 @@ public class JiraReader {
        //issue.fields.issuetype.name
        return rootNode.get("fields").get("issuetype").get("name").asText();
     }
-
-
-
-
 }
