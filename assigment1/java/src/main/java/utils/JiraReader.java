@@ -1,5 +1,9 @@
 package utils;
 
+        import com.fasterxml.jackson.core.JsonFactory;
+        import com.fasterxml.jackson.databind.JsonNode;
+        import com.fasterxml.jackson.databind.ObjectMapper;
+
         import java.io.BufferedReader;
         import java.io.IOException;
         import java.io.InputStreamReader;
@@ -26,7 +30,9 @@ public class JiraReader {
             }
             in.close();
 
-            if (response.toString().toLowerCase().contains("bug")){
+            //Replace this part
+            String bugLine = readBugLine(response.toString());
+            if (bugLine.equals("Bug")){
                 return true;
             }
 
@@ -38,4 +44,23 @@ public class JiraReader {
 
         return false;
     }
+
+    /**
+     * Returns the Issue Response: it could be or not be BUG according to Lucene and Jira Docs
+     * @param json
+     * @return
+     * @throws IOException
+     */
+
+   private static String readBugLine(String json) throws IOException {
+        JsonFactory factory = new JsonFactory();
+        ObjectMapper mapper = new ObjectMapper(factory);
+        JsonNode rootNode = mapper.readTree(json);
+       //issue.fields.issuetype.name
+       return rootNode.get("fields").get("issuetype").get("name").asText();
+    }
+
+
+
+
 }

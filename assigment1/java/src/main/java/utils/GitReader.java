@@ -99,12 +99,13 @@ public class GitReader {
 	
 	
 	/**
-	 * Read from Git the using the shortlog command for a desired repository,
+	 * Read from Git the the number of commits per developer,
 	 * directly to a cache.
 	 * @param until
 	 * @throws IOException 
 	 * @throws InterruptedException 
 	 */
+
 	public Map<String, Integer> readFileCommitsFromDevelopers(String gitProjectPath,String path, String since, String until) throws IOException, InterruptedException {
 		
 		Map<String, Integer> devInformationMap = new HashMap<String, Integer>();
@@ -188,7 +189,7 @@ public class GitReader {
 	}
 
 
-		
-		
-		
+
+
+
 }
