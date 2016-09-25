@@ -130,5 +130,10 @@ public class utilsTest {
 		}
 		assertTrue("File Info Test",tableInfo.size()>0);
 		
-	}	
+	}
+
+	@Test
+	public void commitPojoTest(){
+
+	}
 }

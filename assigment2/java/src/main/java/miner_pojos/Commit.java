@@ -1,6 +1,7 @@
 package miner_pojos;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Andreas on 9/25/16.
@@ -8,14 +9,16 @@ import java.util.Date;
 public class Commit {
     private String hash;
     private String author;
+    private int bugsInduced;
+    private String message;
     private Date timestamp;
-    private FileInfo fileInfo;
+    private List<FileInfo> filesInfo;
 
-    public Commit(String hash, String author, Date timestamp, FileInfo fileInfo){
+    public Commit(String hash, String author, Date timestamp, List<FileInfo> filesInfo){
         this.hash = hash;
         this.author = author;
         this.timestamp = timestamp;
-        this.fileInfo = fileInfo;
+        this.filesInfo = filesInfo;
     }
 
     public String getHash() {
@@ -42,11 +45,11 @@ public class Commit {
         this.timestamp = timestamp;
     }
 
-    public FileInfo getFileInfo() {
-        return fileInfo;
+    public List<FileInfo> getFilesInfo() {
+        return filesInfo;
     }
 
-    public void setFileInfo(FileInfo fileInfo) {
-        this.fileInfo = fileInfo;
+    public void setFilesInfo(List<FileInfo> filesInfo) {
+        this.filesInfo = filesInfo;
     }
 }
