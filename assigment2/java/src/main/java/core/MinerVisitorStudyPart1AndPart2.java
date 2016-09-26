@@ -77,6 +77,64 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
         return proportion;
     }
 
+    public static String getIssueId(String message){
+        String result = null;
+
+        if (message.indexOf(":") > 0 && !message.trim().isEmpty()) {
+            result = message.substring(0, message.indexOf(":"));
+
+            if (!isIssueId(result))
+                result = null;
+        }
+
+        return result;
+    }
+
+    public static Boolean isIssueId(String id){
+        if (id != null && id.length() == 11 && id.contains("-"))
+            return true;
+
+        return false;
+    }
+
+    public static Boolean isDevTimeBug(String message){
+        message = message.toLowerCase();
+
+        if (message.contains("error") || message.contains("bug") || message.contains("fix") || message.contains("issue") || message.contains("mistake") || message.contains("incorrect") || message.contains("fault") || message.contains("defect") || message.contains("flaw") || message.contains("typo"))
+            return true;
+
+        return false;
+    }
+
+    public static int calculatePostReleaseBugs(Commit commit){
+        int result = 0;
+
+        if (getIssueId(commit.getMsg()) != null)
+            result++;
+
+        return result;
+    }
+
+    public static int calculateDevTimeBugs(Commit commit){
+        int result = 0;
+
+        if (getIssueId(commit.getMsg()) == null){
+            if (isDevTimeBug(commit.getMsg()))
+                result++;
+        }
+
+        return result;
+    }
+
+    public static int calculateBugsInduced(List<BlamedLine> blamedLines, int postReleaseBugs, int devTimeBugs){
+        int result = 0;
+
+        if (postReleaseBugs > 0 || devTimeBugs > 0)
+            result = blamedLines.size();
+
+        return result;
+    }
+
     @Override
     public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
         // TODO Auto-generated method stub
@@ -113,6 +171,11 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
                 FileInfo fileInfo =createFileInfoUntilCommitDate(repo, commit, config, file, fileName);
 
                 //TODO: Part 3 goes Here
+                int postReleaseBugs = calculatePostReleaseBugs(commit);
+                int devTimeBugs = calculateDevTimeBugs(commit);
+                int bugsInducedQty = calculateBugsInduced(bl, postReleaseBugs, devTimeBugs);
+                String fixCommitHash = null;
+                String fixCommitTimestamp = null;
 
 
                 //TODO Arrange the CommitInfo object to fit in the table
