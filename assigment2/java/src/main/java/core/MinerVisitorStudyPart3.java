@@ -20,13 +20,9 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
     private JiraLuceneIdFinder jiraLuceneIdFinder = new JiraLuceneIdFinder();
     private static final String[] keywordksList = {"fix","error", "bug", "fix", "issue", "mistake", "incorrect", "fault", "defect", "flaw","typo"};
 
-
-
     @Override
     public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
     InductedBugMetrics inductedBugMetrics = new InductedBugMetrics();
-
-
 
         //Look for commits that fixed a bug
         String commitMessage = commit.getMsg();
@@ -34,12 +30,11 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
         if(jiraLuceneIdFinder.isLuceneIssue(commitMessage) && JiraReader.IsBug(issueId)){
                 inductedBugMetrics.incrementPostReleaseBug();
 
-            //Start 3
+            //Start Git Blame 3
             for(Modification m : commit.getModifications()) {
                 List<BlamedLine> bl = repo.getScm().blame(m.getFileName(),commit.getHash(), true);
                 m.getDiff();
                 }
-
             /////End 3
             }else if(hasKeywords(keywordksList,commitMessage)){
                     inductedBugMetrics.incrementDevTimeBugs();
