@@ -1,4 +1,4 @@
-package utils;
+package core;
 
 
 import java.io.File;
@@ -21,10 +21,9 @@ import miner_pojos.FileInfo;
 import table_builder.TableInfoCreator;
 
 //TODO this method is not an utility is our core implementation move this class to new package called MinerCore
-public class MinerVisitor implements CommitVisitor {
+public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
 
-
-
+    //TODO this should be private or util
     public static int calculateMinorLineContributors(Map<String,Integer> linesPerContributor,Integer totalNumberOfLines){
         int minorCounter=0;
         for (Map.Entry<String, Integer> entry : linesPerContributor.entrySet())
@@ -37,6 +36,7 @@ public class MinerVisitor implements CommitVisitor {
         return minorCounter;
     }
 
+    //TODO this should be private or util
     //TODO Check this method using a stub test to force each case
     public static int calculateMajorLineContributors(Map<String,Integer> linesPerContributor, Integer totalNumberOfLines){
         int majorCounter=0;
@@ -50,6 +50,7 @@ public class MinerVisitor implements CommitVisitor {
         return majorCounter;
     }
 
+    //TODO this should be private or util
     public static double calculateLineContributorsOwnership(Map<String,Integer> linesPerContributor, Integer totalNumberOfLines){
         double ownerMaxProportion=0;
         for (Map.Entry<String, Integer> entry : linesPerContributor.entrySet())
@@ -62,6 +63,7 @@ public class MinerVisitor implements CommitVisitor {
         return ownerMaxProportion;
     }
 
+    //TODO this should be private or util
     public static double calculateLineContributorsAuthor(Map<String,Integer> linesPerContributor, Integer totalNumberOfLines, String authorName ){
         double proportion=0;
         for (Map.Entry<String, Integer> entry : linesPerContributor.entrySet())
@@ -89,7 +91,8 @@ public class MinerVisitor implements CommitVisitor {
                 //TODO Ecanpsulate into a method that returns Object <linesPerContributor,AuthorName>
                 File file = new File(m.getFileName());
                 String fileName = file.getName();
-                List<BlamedLine> bl = repo.getScm().blame(m.getFileName(),commit.getHash(), true);
+                //Add todos here add the case that the modifications added new file
+                List<BlamedLine>  bl = repo.getScm().blame(m.getFileName(),commit.getHash(), true);
                 HashMap<String,Integer> linesPerContributor = new HashMap<String,Integer>();
                 String authorName="";
                 for(BlamedLine b : bl){
@@ -101,19 +104,20 @@ public class MinerVisitor implements CommitVisitor {
                         linesPerContributor.put(b.getCommitter(), linesPerContributor.get(b.getCommitter()) + 1);
                     }
                 }
-
+                //Ask giannis, dimmtrys one to know about
                 double cLCO = calculateLineContributorsOwnership(linesPerContributor, bl.size());
                 double cLCA =  calculateLineContributorsAuthor(linesPerContributor, bl.size(),authorName);
 
                 //Creates file Ownership information from Starting to commit date
-                //TODO: test this method
+                //TODO:Part 2 test this method, this is ready
                 FileInfo fileInfo =createFileInfoUntilCommitDate(repo, commit, config, file, fileName);
-
 
                 //TODO: Part 3 goes Here
 
+
                 //TODO Arrange the CommitInfo object to fit in the table
                 //CommitInfo commitInfo = new CommitInfo(commit,fileName,);
+                //TODO print CommitInfoToCSV file
                 writer.write(
                         commit.getHash(),
                         commit.getAuthor().getName(),
@@ -121,7 +125,6 @@ public class MinerVisitor implements CommitVisitor {
                         commit.getDate().getTime(),
                         fileName,
                         m.getFileName(),
-                        m.getType(),
                         bl.size(),
                         linesPerContributor.size(),
                         calculateMinorLineContributors(linesPerContributor, bl.size()),
@@ -137,6 +140,7 @@ public class MinerVisitor implements CommitVisitor {
 
     private FileInfo createFileInfoUntilCommitDate(SCMRepository repo, Commit commit, Config config, File file, String fileName) {
         FileInfo fileInfo=null;
+        //TODO convert date to dateformat YYYY-MM-DD
         String commitDate = commit.getDate().toString();
         try {
             fileInfo = TableInfoCreator.createRow(repo.getPath(),fileName,file.getPath().toString(),config.getInitDate(),commitDate);
