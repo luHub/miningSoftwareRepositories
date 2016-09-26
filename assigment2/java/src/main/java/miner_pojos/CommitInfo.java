@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Andreas on 9/25/16.
  */
-public class Commit {
+public class CommitInfo {
     private String hash;
     private String author;
     private int bugsInduced;
@@ -14,7 +14,7 @@ public class Commit {
     private Date timestamp;
     private List<FileInfo> filesInfo;
 
-    public Commit(String hash, String author, Date timestamp, List<FileInfo> filesInfo){
+    public CommitInfo(String hash, String author, Date timestamp, List<FileInfo> filesInfo){
         this.hash = hash;
         this.author = author;
         this.timestamp = timestamp;

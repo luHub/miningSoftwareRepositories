@@ -2,6 +2,7 @@ package utils;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,8 +15,15 @@ import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.BlamedLine;
 import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.SCMRepository;
+import core.Config;
+import miner_pojos.CommitInfo;
+import miner_pojos.FileInfo;
+import table_builder.TableInfoCreator;
 
+//TODO this method is not an utility is our core implementation move this class to new package called MinerCore
 public class MinerVisitor implements CommitVisitor {
+
+
 
     public static int calculateMinorLineContributors(Map<String,Integer> linesPerContributor,Integer totalNumberOfLines){
         int minorCounter=0;
@@ -70,9 +78,15 @@ public class MinerVisitor implements CommitVisitor {
     @Override
     public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
         // TODO Auto-generated method stub
+
+        //Config Class with paths and dates that are constant
+        Config config = new Config();
+
         for(Modification m : commit.getModifications()) {
+
             if(m.getFileName().contains("lucene/core/src/java")){
 
+                //TODO Ecanpsulate into a method that returns Object <linesPerContributor,AuthorName>
                 File file = new File(m.getFileName());
                 String fileName = file.getName();
                 List<BlamedLine> bl = repo.getScm().blame(m.getFileName(),commit.getHash(), true);
@@ -87,8 +101,19 @@ public class MinerVisitor implements CommitVisitor {
                         linesPerContributor.put(b.getCommitter(), linesPerContributor.get(b.getCommitter()) + 1);
                     }
                 }
+
                 double cLCO = calculateLineContributorsOwnership(linesPerContributor, bl.size());
                 double cLCA =  calculateLineContributorsAuthor(linesPerContributor, bl.size(),authorName);
+
+                //Creates file Ownership information from Starting to commit date
+                //TODO: test this method
+                FileInfo fileInfo =createFileInfoUntilCommitDate(repo, commit, config, file, fileName);
+
+
+                //TODO: Part 3 goes Here
+
+                //TODO Arrange the CommitInfo object to fit in the table
+                //CommitInfo commitInfo = new CommitInfo(commit,fileName,);
                 writer.write(
                         commit.getHash(),
                         commit.getAuthor().getName(),
@@ -108,7 +133,19 @@ public class MinerVisitor implements CommitVisitor {
 
             }
         }
+    }
 
+    private FileInfo createFileInfoUntilCommitDate(SCMRepository repo, Commit commit, Config config, File file, String fileName) {
+        FileInfo fileInfo=null;
+        String commitDate = commit.getDate().toString();
+        try {
+            fileInfo = TableInfoCreator.createRow(repo.getPath(),fileName,file.getPath().toString(),config.getInitDate(),commitDate);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return fileInfo;
     }
 
     @Override

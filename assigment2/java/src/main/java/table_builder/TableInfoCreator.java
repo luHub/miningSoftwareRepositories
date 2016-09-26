@@ -36,4 +36,15 @@ public class TableInfoCreator {
 		}
 		return fileInfoList;
 	}
+
+	//TODO test this method
+	public static FileInfo createRow(String gitProjectPath,String filePath,String projectPath, String since, String until)
+			throws IOException, InterruptedException {
+			GitReader gitReader = new GitReader();
+			System.out.println("Reading Commits in File: "+filePath);
+			Map<String, Integer> devMap = gitReader.readFileCommitsFromDevelopers(gitProjectPath,projectPath+"\\"+ filePath.replace("/", "\\"), since, until);
+			return FileInfoCreator.createFileInfo(filePath, devMap);
+	}
+
+
 }

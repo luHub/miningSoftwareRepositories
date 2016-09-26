@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
  */
 
 /**
- * This Test are only ment to work with LUCENE Project because of its jira Commit Styling
+ * This Test are only ment to work with LUCENE Project because of its jira CommitInfo Styling
  */
 public class JiraTest {
     @Test

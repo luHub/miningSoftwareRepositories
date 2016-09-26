@@ -12,6 +12,7 @@ import utils.CalculateTableInfo;
  * @author lguerchi
  *
  */
+//TODO change name to tableBuilder
 public class FileInfoCreator {
 
 	public static FileInfo createFileInfo(String filePath, Map<String,Integer> devMap){
@@ -23,7 +24,7 @@ public class FileInfoCreator {
 		Double owner = CalculateTableInfo.calculateOwnership(devMap);
 		int totalContributors = CalculateTableInfo.calculateTotalContributors(devMap);
 		
-		//TODO 
+		//TODO Add Jira Reader
 		//CalculateBugNumber
 		
 		
