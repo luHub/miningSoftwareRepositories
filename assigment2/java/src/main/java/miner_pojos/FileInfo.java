@@ -6,23 +6,99 @@ public class FileInfo {
     
 	private String fileName;
     private String filePackage;
+	private String authorName;
     private int minor;
     private int major;
-    private int totalContributors;
+	private int totalContributors;
     private double numberOfBugs;
-    private double owner;
+	private double owner;
+	private int totalLineContributors;
+	private int lineContributorsMinor;
+	private int lineContributorsMajor;
+	private double lineContributorsOwnership;
+	private double lineContributorsAuthor;
+	private boolean lineContributoesAuthorOwner;
 	private List<LineInfo> linesInfo;
-	
-    public FileInfo(String fileName, String filePakage, int minor, int major, int totalContributors,double numberOfBugs, double owner) {
+
+
+	public FileInfo(String fileName, String filePackage, String authorName,int minor, int major, int totalContributors, double numberOfBugs, double owner, int totalLineContributors, int lineContributorsMinor, int lineContributorsMajor, double lineContributorsOwnership, double lineContributorsAuthor, boolean lineContributoesAuthorOwner, List<LineInfo> linesInfo) {
 		this.fileName = fileName;
-		this.filePackage = filePakage;
+		this.filePackage = filePackage;
+		this.authorName = authorName;
 		this.minor = minor;
 		this.major = major;
 		this.totalContributors = totalContributors;
 		this.numberOfBugs = numberOfBugs;
 		this.owner = owner;
+		this.totalLineContributors = totalLineContributors;
+		this.lineContributorsMinor = lineContributorsMinor;
+		this.lineContributorsMajor = lineContributorsMajor;
+		this.lineContributorsOwnership = lineContributorsOwnership;
+		this.lineContributorsAuthor = lineContributorsAuthor;
+		this.lineContributoesAuthorOwner = lineContributoesAuthorOwner;
+		this.linesInfo = linesInfo;
 	}
-   
+
+
+	public String getAuthorName() {
+		return authorName;
+	}
+
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+
+	public double getLineContributorsOwnership() {
+		return lineContributorsOwnership;
+	}
+	public void setLineContributorsOwnership(double lineContributorsOwnership) {
+		this.lineContributorsOwnership = lineContributorsOwnership;
+	}
+
+	public String getFilePackage() {
+		return filePackage;
+	}
+
+	public void setFilePackage(String filePackage) {
+		this.filePackage = filePackage;
+	}
+
+	public int getTotalLineContributors() {
+		return totalLineContributors;
+	}
+
+	public void setTotalLineContributors(int totalLineContributors) {
+		this.totalLineContributors = totalLineContributors;
+	}
+
+	public int getLineContributorsMinor() {
+		return lineContributorsMinor;
+	}
+
+	public void setLineContributorsMinor(int lineContributorsMinor) {
+		this.lineContributorsMinor = lineContributorsMinor;
+	}
+
+	public int getLineContributorsMajor() {
+		return lineContributorsMajor;
+	}
+
+	public void setLineContributorsMajor(int lineContributorsMajor) {
+		this.lineContributorsMajor = lineContributorsMajor;
+	}
+
+	public double getLineContributorsAuthor() {
+		return lineContributorsAuthor;
+	}
+	public void setLineContributorsAuthor(double lineContributorsAuthor) {
+		this.lineContributorsAuthor = lineContributorsAuthor;
+	}
+	public boolean isLineContributoesAuthorOwner() {
+		return lineContributoesAuthorOwner;
+	}
+	public void setLineContributoesAuthorOwner(boolean lineContributoesAuthorOwner) {
+		this.lineContributoesAuthorOwner = lineContributoesAuthorOwner;
+	}
 	public String getFileName() {
 		return fileName;
 	}

@@ -149,7 +149,7 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
                     FileInfo fileInfo =createFileInfoUntilCommitDate(repo, commit, config, file, fileName);
                     fileInfoList.add(fileInfo);
 
-                CommitInfo commitInfo = new CommitInfo(commit.getHash(),commit.getAuthor().toString(),commit.getDate(),fileInfoList);
+                CommitInfo commitInfo = new CommitInfo(commit.getHash(),commit.getAuthor().getName(),0,commit.getMsg(),commit.getDate(),fileInfoList);
                 commitInfo.setFilesInfo(fileInfoList);
                 commitInfoMap.put(commit.getHash(),commitInfo);
 

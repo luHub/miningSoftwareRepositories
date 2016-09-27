@@ -9,17 +9,17 @@ import java.util.List;
  */
 public class CommitInfo {
     private String hash;
-    private String author;
     private String commiter;
-
     private int bugsInduced;
     private String message;
     private Calendar date;
     private List<FileInfo> filesInfo;
 
-    public CommitInfo(String hash, String author, Calendar date, List<FileInfo> filesInfo){
+    public CommitInfo(String hash, String commiter, int bugsInduced, String message, Calendar date, List<FileInfo> filesInfo) {
         this.hash = hash;
-        this.author = author;
+        this.commiter = commiter;
+        this.bugsInduced = bugsInduced;
+        this.message = message;
         this.date = date;
         this.filesInfo = filesInfo;
     }
@@ -32,13 +32,38 @@ public class CommitInfo {
         this.hash = hash;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getCommiter() {
+        return commiter;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setCommiter(String commiter) {
+        this.commiter = commiter;
     }
+
+    public int getBugsInduced() {
+        return bugsInduced;
+    }
+
+    public void setBugsInduced(int bugsInduced) {
+        this.bugsInduced = bugsInduced;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Calendar getDate() {
+        return date;
+    }
+
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
+
 
     public Calendar getTimestamp() {
         return date;
