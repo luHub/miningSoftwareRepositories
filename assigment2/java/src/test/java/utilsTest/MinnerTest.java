@@ -14,6 +14,7 @@ import utils.TableOutput;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +24,7 @@ import java.util.Map;
 public class MinnerTest {
 
     //This path is not part of the project change to run this properly
-    private final String repositoryFilePath="C:\\Users\\Giannis Pap\\Lucene\\lucene-solr";
+    private final String repositoryFilePath="E:\\MiningRepositories\\lune\\lucene-solr";
     private final String specificPath="lucene/core/src/java";
     private final Calendar fromDate = new GregorianCalendar(2013, Calendar.JANUARY, 01);
     private final Calendar toDate = new GregorianCalendar(2013, Calendar.DECEMBER, 31);
@@ -43,9 +44,10 @@ public class MinnerTest {
      */
     @Test
     public void MinnerPart3(){
-        MinerStudy minerStudy = new MinerStudy();
-        minerStudy.initalize();
-        minerStudy.execute();
+        MinerStudy minerStudyPart3 = new MinerStudy();
+        minerStudyPart3.initalize();
+        minerStudyPart3.execute();
+        List<MinerVisitorStudyPart3.InductedBugMetrics> ListOfInducedBugs = minerStudyPart3.getMinerVisitorStudyPart3().getInductedBugMetricsList(); //minerVisitorStudyPart3.getInductedBugMetricsList();
     }
 
 
@@ -80,7 +82,7 @@ public class MinnerTest {
     //TODO instantiate objects like a in a more redable way please at the beggining of the test
     public class MinerStudy implements Study {
 
-        MinerVisitorStudyPart3 minerVisitorStudyPart3 = new MinerVisitorStudyPart3();
+        private MinerVisitorStudyPart3 minerVisitorStudyPart3 = new MinerVisitorStudyPart3(specificPath);
 
         public  void initalize(){
             new MetricMiner2().start(new MinerStudy());
@@ -95,6 +97,14 @@ public class MinnerTest {
                     .startingFromTheBeginning()
                     .process(minerVisitorStudyPart3)
                     .mine();
+        }
+
+        public MinerVisitorStudyPart3 getMinerVisitorStudyPart3() {
+            return minerVisitorStudyPart3;
+        }
+
+        public void setMinerVisitorStudyPart3(MinerVisitorStudyPart3 minerVisitorStudyPart3) {
+            this.minerVisitorStudyPart3 = minerVisitorStudyPart3;
         }
     }
 }

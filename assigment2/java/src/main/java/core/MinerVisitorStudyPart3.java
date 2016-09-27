@@ -6,6 +6,7 @@ import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.BlamedLine;
 import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.SCMRepository;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import miner_pojos.DiffInfo;
 import utils.GitInfo;
 import utils.JiraLuceneIdFinder;
@@ -18,26 +19,36 @@ import java.util.*;
  */
 public class MinerVisitorStudyPart3 implements CommitVisitor {
 
+    private String specificPath="";
+
+    public MinerVisitorStudyPart3(String specificPath){
+        this.specificPath=specificPath;
+    }
+
     private JiraLuceneIdFinder jiraLuceneIdFinder = new JiraLuceneIdFinder();
     private static final String[] keywordksList = {"fix","error", "bug", "fix", "issue", "mistake", "incorrect", "fault", "defect", "flaw","typo"};
     private List<InductedBugMetrics> inductedBugMetricsList = new ArrayList<>();
 
     @Override
-    public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
+    public void process(SCMRepository repo, Commit commitFix, PersistenceMechanism writer) {
         //Look for commits that fixed a bug
-        String commitMessage = commit.getMsg();
-        String issueId=jiraLuceneIdFinder.readLuceneId(commitMessage);
-        if(jiraLuceneIdFinder.isLuceneIssue(commitMessage) && JiraReader.IsBug(issueId)){
-            InductedBugMetrics inductedBugMetrics = populateInducedMetric(repo, commit);
-            this.inductedBugMetricsList.add(inductedBugMetrics);
-           }else if(hasKeywords(keywordksList,commitMessage)){
-            InductedBugMetrics inductedBugMetrics = populateInducedMetric(repo, commit);
-            this.inductedBugMetricsList.add(inductedBugMetrics);
+        String commitMessage = commitFix.getMsg();
+        for (Modification m : commitFix.getModifications()) {
+            if (m.getFileName().contains(specificPath)) {
+                String issueId = jiraLuceneIdFinder.readLuceneId(commitMessage);
+                if (jiraLuceneIdFinder.isLuceneIssue(commitMessage) && JiraReader.IsBug(issueId)) {
+                    InductedBugMetrics inductedBugMetrics = populateInducedMetric(repo, commitFix,m);
+                    this.inductedBugMetricsList.add(inductedBugMetrics);
+                } else if (hasKeywords(keywordksList, commitMessage)) {
+                    InductedBugMetrics inductedBugMetrics = populateInducedMetric(repo, commitFix,m);
+                    this.inductedBugMetricsList.add(inductedBugMetrics);
+                }
+            }
         }
     }
 
-    private InductedBugMetrics populateInducedMetric(SCMRepository repo, Commit commit) {
-        InductedBugMetrics inductedBugMetrics = calculateBugsInduced(repo,commit);
+    private InductedBugMetrics populateInducedMetric(SCMRepository repo, Commit commit,Modification m) {
+        InductedBugMetrics inductedBugMetrics = calculateBugsInduced(repo,commit,m);
         inductedBugMetrics.incrementPostReleaseBug();
         inductedBugMetrics.setFixCommitHash(commit.getHash());
         inductedBugMetrics.setFixCommitTimeStamp(commit.getDate());
@@ -53,19 +64,18 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
     //FileName
     //Commit Hash
     //BugInduced
-    private  InductedBugMetrics calculateBugsInduced(SCMRepository repo, Commit commitFix) {
+    //Note: Here is where to put the Algorithm to check induced bugs, current hypothesis is that
+    //lines removed in fix are bugs.
+    private  InductedBugMetrics calculateBugsInduced(SCMRepository repo, Commit commitFix,Modification m) {
         InductedBugMetrics inducedBugMetric = new InductedBugMetrics();
         boolean end=false;
         List<BlamedLine> blamedList = new ArrayList();
         List<DiffInfo> diffInfoList = new ArrayList();
-        for (Modification m : commitFix.getModifications()) {
-            blamedList = repo.getScm().blame(m.getFileName(), commitFix.getHash(), true);
+                blamedList = repo.getScm().blame(m.getFileName(), commitFix.getHash(), true);
             diffInfoList = GitInfo.extractFromGitDiffModifiedLines(m.getDiff()); //@@ -567,8 +567,8 -567,8 @@
-            //TODO Improve this part Not optimal approach because of "time constraints".
             for(BlamedLine blamedLine : blamedList){
                 //Where the Commiter Commits its Commit
                 int blamedLineNumber = blamedLine.getLineNumber();
-                //TODO Improve This is the Bad part because of another "for" cycle this could take years to finish
                 for(DiffInfo diffInfo : diffInfoList){
                     Integer diffLineNumber = diffInfo.getLineNumber();
                     Integer diffLineModification = diffInfo.getLinesModifications();
@@ -75,13 +85,12 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
                         PairCommitFile pairCommitFile = new PairCommitFile(blamedLine.getCommit(),m.getFileName());
                         if(!inducedBugMetric.getBugCommitFileNameMap().containsKey(pairCommitFile)){
                             inducedBugMetric.getBugCommitFileNameMap().put(pairCommitFile,1);
+                            break;
                         }
-                        break;
+
                     }
                 }
-            }
         }
-
         return inducedBugMetric;
     }
 
@@ -90,7 +99,7 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
     }
 
 
-    class PairCommitFile{
+  public  class PairCommitFile{
 
         public PairCommitFile(String commit, String fileName) {
             this.commitHash=commit;
@@ -151,10 +160,10 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
     /**
      * Induced Bugs Class
      */
-    class InductedBugMetrics {
+    public class InductedBugMetrics {
 
 
-        private Map<PairCommitFile,Integer> bugCommitFileNameMap;
+        private Map<PairCommitFile,Integer> bugCommitFileNameMap=new HashMap<>();
         private int postReleaseBug;
         private int devTimeBug;
         private String fixCommitHash;

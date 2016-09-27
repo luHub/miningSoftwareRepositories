@@ -105,9 +105,14 @@ public class FileInfo {
 	public boolean isLineContributoesAuthorOwner() {
 		return lineContributoesAuthorOwner;
 	}
+
 	public void setLineContributoesAuthorOwner(boolean lineContributoesAuthorOwner) {
 		this.lineContributoesAuthorOwner = lineContributoesAuthorOwner;
 	}
+	public boolean getLineContributorsAuthorOwner() {
+		return this.lineContributoesAuthorOwner;
+	}
+
 	public String getFileName() {
 		return fileName;
 	}
