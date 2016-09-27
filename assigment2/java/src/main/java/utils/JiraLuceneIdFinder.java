@@ -12,9 +12,13 @@ public class JiraLuceneIdFinder {
     private Pattern p = Pattern.compile("Lucene-[0-9]+");
 
     public String readLuceneId(String commitMessage){
+        if(isLuceneIssue(commitMessage)){
         Matcher m = p.matcher(commitMessage);
         return m.group(1);
-    }
+        }
+        return "";
+        }
+
 
     public boolean isLuceneIssue(String commitMessage) {
         Matcher m = p.matcher(commitMessage);

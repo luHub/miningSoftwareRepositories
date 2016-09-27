@@ -3,11 +3,7 @@ package core;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.Modification;
@@ -15,13 +11,14 @@ import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.BlamedLine;
 import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.SCMRepository;
-import core.Config;
 import miner_pojos.CommitInfo;
 import miner_pojos.FileInfo;
 import table_builder.TableInfoCreator;
 
 //TODO this method is not an utility is our core implementation move this class to new package called MinerCore
 public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
+
+    private Map<String, CommitInfo> commitInfoMap = new HashMap<>();
 
     //TODO this should be private or util
     public static int calculateMinorLineContributors(Map<String,Integer> linesPerContributor,Integer totalNumberOfLines){
@@ -90,6 +87,8 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
         return result;
     }
 
+    //TODO remove this stuff
+    @Deprecated
     public static Boolean isIssueId(String id){
         if (id != null && id.length() == 11 && id.contains("-"))
             return true;
@@ -97,6 +96,8 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
         return false;
     }
 
+    //TODO remove this stuff
+    @Deprecated
     public static Boolean isDevTimeBug(String message){
         message = message.toLowerCase();
 
@@ -106,6 +107,8 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
         return false;
     }
 
+    //TODO remove this stuff
+    @Deprecated
     public static int calculatePostReleaseBugs(Commit commit){
         int result = 0;
 
@@ -114,7 +117,8 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
 
         return result;
     }
-
+    //TODO remove this stuff
+    @Deprecated
     public static int calculateDevTimeBugs(Commit commit){
         int result = 0;
 
@@ -125,7 +129,8 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
 
         return result;
     }
-
+    //TODO remove this stuff
+    @Deprecated
     public static int calculateBugsInduced(List<BlamedLine> blamedLines, int postReleaseBugs, int devTimeBugs){
         int result = 0;
 
@@ -139,8 +144,12 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
     public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
         // TODO Auto-generated method stub
 
+        List<FileInfo> fileInfoList = new ArrayList<>();
+
         //Config Class with paths and dates that are constant
         Config config = new Config();
+        List<String> filesList = new ArrayList<>();
+        boolean isRepeated=false;
 
         for(Modification m : commit.getModifications()) {
 
@@ -163,41 +172,31 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
                     }
                 }
                 //Ask giannis, dimmtrys one to know about
+                //TODO test this calculation
                 double cLCO = calculateLineContributorsOwnership(linesPerContributor, bl.size());
+                //TODO test this calculation
                 double cLCA =  calculateLineContributorsAuthor(linesPerContributor, bl.size(),authorName);
 
                 //Creates file Ownership information from Starting to commit date
                 //TODO:Part 2 test this method, this is ready
-                FileInfo fileInfo =createFileInfoUntilCommitDate(repo, commit, config, file, fileName);
+                //Do not repeat files
+                //TODO Use a Hash Next time with and Object next time
+                for(String fileNameInList : filesList){
+                    if(fileNameInList.equals(fileName)){
+                       isRepeated=true;
+                    }else{
+                        isRepeated=false;
+                    }
+                }
+                if(!isRepeated){
+                    filesList.add(fileName);
+                    FileInfo fileInfo =createFileInfoUntilCommitDate(repo, commit, config, file, fileName);
+                    fileInfoList.add(fileInfo);
+                }
+                isRepeated=false;
+                }//End of big for cycle
 
-                //TODO: Part 3 goes Here
-                int postReleaseBugs = calculatePostReleaseBugs(commit);
-                int devTimeBugs = calculateDevTimeBugs(commit);
-                int bugsInducedQty = calculateBugsInduced(bl, postReleaseBugs, devTimeBugs);
-                String fixCommitHash = null;
-                String fixCommitTimestamp = null;
-
-
-                //TODO Arrange the CommitInfo object to fit in the table
-                //CommitInfo commitInfo = new CommitInfo(commit,fileName,);
-                //TODO print CommitInfoToCSV file
-                writer.write(
-                        commit.getHash(),
-                        commit.getAuthor().getName(),
-                        commit.getCommitter().getName(),
-                        commit.getDate().getTime(),
-                        fileName,
-                        m.getFileName(),
-                        bl.size(),
-                        linesPerContributor.size(),
-                        calculateMinorLineContributors(linesPerContributor, bl.size()),
-                        calculateMajorLineContributors(linesPerContributor, bl.size()),
-                        cLCO,
-                        cLCA,
-                        cLCO == cLCA ? cLCA : false
-                );
-
-            }
+            CommitInfo commitInfo = new CommitInfo(commit.getHash(),commit.getAuthor().toString(),commit.getDate(),fileInfoList);
         }
     }
 
@@ -221,4 +220,7 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
         return "developers";
     }
 
+    public Map<String, CommitInfo> getCommitInfoMap() {
+        return commitInfoMap;
+    }
 }

@@ -17,7 +17,7 @@ import utils.PathFilters;
 
 
 
-public class utilsTest {
+public class UtilsTest {
 
 	/**
 	 * Test that filters are working properly for all *.java files

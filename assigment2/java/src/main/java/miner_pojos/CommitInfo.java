@@ -1,5 +1,6 @@
 package miner_pojos;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,13 +12,13 @@ public class CommitInfo {
     private String author;
     private int bugsInduced;
     private String message;
-    private Date timestamp;
+    private Calendar date;
     private List<FileInfo> filesInfo;
 
-    public CommitInfo(String hash, String author, Date timestamp, List<FileInfo> filesInfo){
+    public CommitInfo(String hash, String author, Calendar date, List<FileInfo> filesInfo){
         this.hash = hash;
         this.author = author;
-        this.timestamp = timestamp;
+        this.date = date;
         this.filesInfo = filesInfo;
     }
 
@@ -37,12 +38,12 @@ public class CommitInfo {
         this.author = author;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public Calendar getTimestamp() {
+        return date;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setTimestamp(Calendar timestamp) {
+        this.date = timestamp;
     }
 
     public List<FileInfo> getFilesInfo() {

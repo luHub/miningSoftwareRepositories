@@ -4,7 +4,7 @@ import java.util.List;
 import miner_pojos.FileInfo;
 import table_builder.TableInfoCreator;
 import utils.TableOutput;
- 
+
 public class main {
 
 	/**
@@ -19,7 +19,7 @@ public class main {
 			System.out.println("Creating Table From Project in Path:" + args[1]);
 			System.out.println("Creating Table From Project in Path Since:" + args[2]);
 			System.out.println("Creating Table From Project in Path Until:" + args[3]);
-			
+
 			try {
 				List<FileInfo>tableInfo = TableInfoCreator.createTable(args[0],args[1], args[2], args[3]);
 				System.out.println("Saving Table");
@@ -29,7 +29,7 @@ public class main {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
- 
+
 		} else {
 			System.out.println("Write the correct form ProjectPath Since Until");
 		}
