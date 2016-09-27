@@ -10,6 +10,8 @@ import java.util.List;
 public class CommitInfo {
     private String hash;
     private String author;
+    private String commiter;
+
     private int bugsInduced;
     private String message;
     private Calendar date;

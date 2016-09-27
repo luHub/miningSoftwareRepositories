@@ -38,12 +38,12 @@ public class TableInfoCreator {
 	}
 
 	//TODO test this method
-	public static FileInfo createRow(String gitProjectPath,String filePath,String projectPath, String since, String until)
+	public static FileInfo createRow(String gitProjectPath,String fileName,String projectPath, String since, String until)
 			throws IOException, InterruptedException {
 			GitReader gitReader = new GitReader();
-			System.out.println("Reading Commits in File: "+filePath);
-			Map<String, Integer> devMap = gitReader.readFileCommitsFromDevelopers(gitProjectPath,projectPath+"\\"+ filePath.replace("/", "\\"), since, until);
-			return FileInfoCreator.createFileInfo(filePath, devMap);
+			System.out.println("Reading Commits in File: "+fileName);
+			Map<String, Integer> devMap = gitReader.readFileCommitsFromDevelopers(gitProjectPath.replace("/","\\"),(gitProjectPath+"/"+projectPath).replace("/","\\"), since, until);
+			return FileInfoCreator.createFileInfo(fileName, devMap);
 	}
 
 

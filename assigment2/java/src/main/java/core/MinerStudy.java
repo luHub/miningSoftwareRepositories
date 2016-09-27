@@ -23,7 +23,7 @@ public class MinerStudy implements Study {
     @Override
     public void execute() {
 
-        MinerVisitorStudyPart1AndPart2 minerVisitorStudyPart1AndPart2 = new MinerVisitorStudyPart1AndPart2();
+        MinerVisitorStudyPart1AndPart2 minerVisitorStudyPart1AndPart2 = new MinerVisitorStudyPart1AndPart2("lucene/core/src/java");
         //TODO use dates from Config formatting to calendar method should be added
         //TODO To create the calendat stuff parse get the date from config and parse it
         new RepositoryMining()
