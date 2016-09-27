@@ -23,10 +23,10 @@ import java.util.Map;
 public class MinnerTest {
 
     //This path is not part of the project change to run this properly
-    private final String repositoryFilePath="E:\\MiningRepositories\\lune\\lucene-solr";
+    private final String repositoryFilePath="C:\\Users\\Giannis Pap\\Lucene\\lucene-solr";
     private final String specificPath="lucene/core/src/java";
     private final Calendar fromDate = new GregorianCalendar(2013, Calendar.JANUARY, 01);
-    private final Calendar toDate = new GregorianCalendar(2017, Calendar.JANUARY, 01);
+    private final Calendar toDate = new GregorianCalendar(2013, Calendar.DECEMBER, 31);
 
     @Test
     public void MinnerPart1Test() throws IOException {

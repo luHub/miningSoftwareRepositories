@@ -39,6 +39,15 @@ public class FileInfo {
 		this.linesInfo = linesInfo;
 	}
 
+	public FileInfo(String fileName, String filePackage, Integer minor, Integer major, int totalContributors, int i, Double owner) {
+		this.fileName = fileName;
+		this.filePackage = filePackage;
+		this.minor = minor;
+		this.major = major;
+		this.totalContributors = totalContributors;
+		this.owner = owner;
+	}
+
 
 	public String getAuthorName() {
 		return authorName;
@@ -104,12 +113,6 @@ public class FileInfo {
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
-	}
-	public String getFilePakage() {
-		return filePackage;
-	}
-	public void setFilePakage(String filePakage) {
-		this.filePackage = filePakage;
 	}
 	public double getMinor() {
 		return minor;
