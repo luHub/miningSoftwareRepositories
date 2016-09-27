@@ -18,10 +18,9 @@ public class FileInfo {
 	private double lineContributorsOwnership;
 	private double lineContributorsAuthor;
 	private boolean lineContributoesAuthorOwner;
-	private List<LineInfo> linesInfo;
 
 
-	public FileInfo(String fileName, String filePackage, String authorName,int minor, int major, int totalContributors, double numberOfBugs, double owner, int totalLineContributors, int lineContributorsMinor, int lineContributorsMajor, double lineContributorsOwnership, double lineContributorsAuthor, boolean lineContributoesAuthorOwner, List<LineInfo> linesInfo) {
+	public FileInfo(String fileName, String filePackage, String authorName,int minor, int major, int totalContributors, double numberOfBugs, double owner, int totalLineContributors, int lineContributorsMinor, int lineContributorsMajor, double lineContributorsOwnership, double lineContributorsAuthor, boolean lineContributoesAuthorOwner) {
 		this.fileName = fileName;
 		this.filePackage = filePackage;
 		this.authorName = authorName;
@@ -36,7 +35,7 @@ public class FileInfo {
 		this.lineContributorsOwnership = lineContributorsOwnership;
 		this.lineContributorsAuthor = lineContributorsAuthor;
 		this.lineContributoesAuthorOwner = lineContributoesAuthorOwner;
-		this.linesInfo = linesInfo;
+
 	}
 
 	public FileInfo(String fileName, String filePackage, Integer minor, Integer major, int totalContributors, int i, Double owner) {
@@ -60,6 +59,7 @@ public class FileInfo {
 	public double getLineContributorsOwnership() {
 		return lineContributorsOwnership;
 	}
+
 	public void setLineContributorsOwnership(double lineContributorsOwnership) {
 		this.lineContributorsOwnership = lineContributorsOwnership;
 	}
@@ -150,21 +150,8 @@ public class FileInfo {
 		this.owner = owner;
 	}
 
-	public List<LineInfo> getLinesInfo() {
-		return linesInfo;
-	}
 
-	public void setLinesInfo(List<LineInfo> linesInfo) {
-		this.linesInfo = linesInfo;
-	}
 
-	// these all from list of linesInfo
-	// get line contributors total
-	// get line contributors minor
-	// get line contributors major
-	// get line contributors ownership
-	// get line contributors author
-	// get line contributors author owner
 
 	@Override
 	public String toString(){
