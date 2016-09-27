@@ -2,6 +2,7 @@ package core;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 
 import br.com.metricminer2.MetricMiner2;
@@ -11,7 +12,6 @@ import br.com.metricminer2.persistence.csv.CSVFile;
 import br.com.metricminer2.scm.GitRepository;
 import br.com.metricminer2.scm.commitrange.Commits;
 import miner_pojos.CommitInfo;
-import miner_pojos.DiffInfo;
 
 //TODO this is not an utility move this to core package
 public class MinerStudy implements Study {
@@ -31,7 +31,7 @@ public class MinerStudy implements Study {
                 .through(Commits.betweenDates(new GregorianCalendar(2013, Calendar.JANUARY, 01),
                         new GregorianCalendar(2013, Calendar.DECEMBER, 31)))
                 .startingFromTheBeginning()
-                .process(minerVisitorStudyPart1AndPart2, new CSVFile("C:\\Users\\Giannis Pap\\EclipseWorkspace\\miningSoftwareRepositories\\assigment2\\devsdio.csv"))
+                .process(minerVisitorStudyPart1AndPart2)
                 .mine();
 
         //Part 2 Result:
@@ -47,7 +47,7 @@ public class MinerStudy implements Study {
                 .mine();
 
         //Part 3 Result:
-        Map<String, MinerVisitorStudyPart3.InductedBugMetrics> mapOfInducedBugs = minerVisitorStudyPart3.getInductedBugMetricsMap();
+        List<MinerVisitorStudyPart3.InductedBugMetrics> ListOfInducedBugs = minerVisitorStudyPart3.getInductedBugMetricsList();
 
         //TODO Create the table
 

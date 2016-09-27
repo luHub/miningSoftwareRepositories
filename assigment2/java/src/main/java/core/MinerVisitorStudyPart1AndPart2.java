@@ -1,10 +1,9 @@
 package core;
 
-
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
-
 import br.com.metricminer2.domain.Commit;
 import br.com.metricminer2.domain.Modification;
 import br.com.metricminer2.persistence.PersistenceMechanism;
@@ -179,7 +178,6 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
 
                 //Creates file Ownership information from Starting to commit date
                 //TODO:Part 2 test this method, this is ready
-                //Do not repeat files
                 //TODO Use a Hash Next time with and Object next time
                 for(String fileNameInList : filesList){
                     if(fileNameInList.equals(fileName)){
@@ -197,13 +195,14 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
                 }//End of big for cycle
 
             CommitInfo commitInfo = new CommitInfo(commit.getHash(),commit.getAuthor().toString(),commit.getDate(),fileInfoList);
+            commitInfoMap.put(commit.getHash(),commitInfo);
         }
     }
 
     private FileInfo createFileInfoUntilCommitDate(SCMRepository repo, Commit commit, Config config, File file, String fileName) {
         FileInfo fileInfo=null;
-        //TODO convert date to dateformat YYYY-MM-DD
-        String commitDate = commit.getDate().toString();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        String commitDate = format1.format(commit.getDate());
         try {
             fileInfo = TableInfoCreator.createRow(repo.getPath(),fileName,file.getPath().toString(),config.getInitDate(),commitDate);
         } catch (IOException e) {
