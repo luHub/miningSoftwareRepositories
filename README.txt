@@ -3,7 +3,7 @@ REPO FOR MINING SOFTWARE REPOSITORIES CLASS
 Assignment 1) 
 
 Docs: Contain the Report and Results of Applying a Python Script
-Python: Working Phyton Script to generate CSV Table.
+Python: Working Python Script to generate CSV Table.
 Java: Alpha Version of the data collector.
 
 Assignment 2)
