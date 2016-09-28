@@ -31,9 +31,10 @@ public class MinerStudy implements Study {
         //TODO use dates from Config formatting to calendar method should be added
         //TODO To create the calendat stuff parse get the date from config and parse it
         new RepositoryMining()
-                .in(GitRepository.singleProject("E:\\MiningRepositories\\lune\\lucene-solr"))
+                .in(GitRepository.singleProject("C:\\Lucene\\lucene-solr"))
                 .through(Commits.betweenDates(new GregorianCalendar(2013, Calendar.JANUARY, 01),
                         new GregorianCalendar(2013, Calendar.DECEMBER, 31)))
+                .withThreads(4)
                 .startingFromTheBeginning()
                 .process(minerVisitorStudyPart1AndPart2)
                 .mine();
@@ -43,9 +44,10 @@ public class MinerStudy implements Study {
 
         MinerVisitorStudyPart3 minerVisitorStudyPart3 = new MinerVisitorStudyPart3("lucene/core/src/java");
         new RepositoryMining()
-                .in(GitRepository.singleProject("E:\\MiningRepositories\\lune\\lucene-solr"))
+                .in(GitRepository.singleProject("C:\\Lucene\\lucene-solr"))
                 .through(Commits.betweenDates(new GregorianCalendar(2013, Calendar.JANUARY, 01),
                         new GregorianCalendar(2016, Calendar.JANUARY, 01)))
+                .withThreads(4)
                 .startingFromTheBeginning()
                 .process(minerVisitorStudyPart3)
                 .mine();
@@ -75,6 +77,29 @@ public class MinerStudy implements Study {
                                 bugInducedInfo = entry.getValue() + " " + lib.getPostReleaseBug() + " " + lib.getDevTimeBug() + " " + lib.getFixCommitHash() + " " + lib.getFixCommitTimeStamp();
                             }
                         }
+                        String commitKey = commitInfo.getKey();
+                        String fileName = fileInfo.getFileName();
+                        String filePackage = fileInfo.getFilePackage();
+                        String commiter = commitInfo.getValue().getCommiter();
+                        String date = commitInfo.getValue().getDate().getTime().toString();
+                        String totalLineContrib = String.valueOf(fileInfo.getTotalLineContributors());
+                        String lineContribMinor = String.valueOf(fileInfo.getLineContributorsMinor());
+                        String lineContribMajor = String.valueOf(fileInfo.getLineContributorsMajor());
+                        String lineContribOwnership = String.valueOf(fileInfo.getLineContributorsOwnership());
+                        String lineContributorsAuthor = String.valueOf(fileInfo.getLineContributorsAuthor());
+                        String lineContributorOwner = String.valueOf(fileInfo.getLineContributorsAuthorOwner());
+                        String totalContributors = String.valueOf(fileInfo.getTotalContributors());
+                        String minor = String.valueOf(fileInfo.getMinor());
+                        String major = String.valueOf(fileInfo.getMajor());
+                        String owner = String.valueOf(fileInfo.getOwner());
+
+                        System.out.println(commitKey + " " + fileName + " " + filePackage + " " + commiter
+                                + " " + date + " " + totalLineContrib + " " + lineContribMinor + " " + lineContribMajor
+                                + " " + lineContribOwnership + " " + lineContributorsAuthor
+                                + " " + lineContributorOwner + " " + totalContributors
+                                + " " + minor + " " + major + " " + owner
+                                + " " + 0 + " " + 0 + " " + bugInducedInfo);
+
                         //TODO Missing Commit Contributors Author Commit Contrib Auth Owner
                         writer.write(commitInfo.getKey() + " " + fileInfo.getFileName() + " " + fileInfo.getFilePackage() + " " + commitInfo.getValue().getCommiter()
                                 + " " + commitInfo.getValue().getDate().getTime() + " " + fileInfo.getTotalLineContributors()

@@ -32,16 +32,18 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
     @Override
     public void process(SCMRepository repo, Commit commitFix, PersistenceMechanism writer) {
         //Look for commits that fixed a bug
-        String commitMessage = commitFix.getMsg();
-        for (Modification m : commitFix.getModifications()) {
-            if (m.getFileName().contains(specificPath)) {
-                String issueId = jiraLuceneIdFinder.readLuceneId(commitMessage);
-                if (jiraLuceneIdFinder.isLuceneIssue(commitMessage) && JiraReader.IsBug(issueId)) {
-                    InductedBugMetrics inductedBugMetrics = populateInducedMetric(repo, commitFix,m);
-                    this.inductedBugMetricsList.add(inductedBugMetrics);
-                } else if (hasKeywords(keywordksList, commitMessage)) {
-                    InductedBugMetrics inductedBugMetrics = populateInducedMetric(repo, commitFix,m);
-                    this.inductedBugMetricsList.add(inductedBugMetrics);
+        if(commitFix.getBranches().contains("master")) {
+            String commitMessage = commitFix.getMsg();
+            for (Modification m : commitFix.getModifications()) {
+                if (m.getFileName().contains(specificPath)) {
+                    String issueId = jiraLuceneIdFinder.readLuceneId(commitMessage);
+                    if (jiraLuceneIdFinder.isLuceneIssue(commitMessage) && JiraReader.IsBug(issueId)) {
+                        InductedBugMetrics inductedBugMetrics = populateInducedMetric(repo, commitFix, m);
+                        this.inductedBugMetricsList.add(inductedBugMetrics);
+                    } else if (hasKeywords(keywordksList, commitMessage)) {
+                        InductedBugMetrics inductedBugMetrics = populateInducedMetric(repo, commitFix, m);
+                        this.inductedBugMetricsList.add(inductedBugMetrics);
+                    }
                 }
             }
         }

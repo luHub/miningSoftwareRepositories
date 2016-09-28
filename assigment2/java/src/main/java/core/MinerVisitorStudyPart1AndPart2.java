@@ -105,51 +105,51 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
     @Override
     public void process(SCMRepository repo, Commit commit, PersistenceMechanism writer) {
         // TODO Auto-generated method stub
+        if(commit.getBranches().contains("master")) {
+            List<FileInfo> fileInfoList = new ArrayList<>();
 
-        List<FileInfo> fileInfoList = new ArrayList<>();
-
-        //Config Class with paths and dates that are constant
-        Config config = new Config();
-        List<String> filesList = new ArrayList<>();
-        boolean isRepeated=false;
-        double cLCO =-1;
-        double cLCA =-1;
-        String authorName="";
-        for(Modification m : commit.getModifications()) {
-            List<BlamedLine> bl = null;
-            HashMap<String, Integer> linesPerContributor = null;
-            if(m.getFileName().contains(specificPath)){
-                //TODO Ecanpsulate into a method that returns Object <linesPerContributor,AuthorName>
-                File file = new File(m.getFileName());
-                String fileName = file.getName();
-                //Add todos here add the case that the modifications added new file
-                if(!m.getType().equals("ADD")) {
-                    bl = repo.getScm().blame(m.getFileName(), commit.getHash(), true);
-                    linesPerContributor = new HashMap<String, Integer>();
-                    for (BlamedLine b : bl) {
-                        authorName = b.getAuthor();
-                        if (!linesPerContributor.containsKey(b.getCommitter())) {
-                            linesPerContributor.put(b.getCommitter(), 1);
-                        } else {
-                            linesPerContributor.put(b.getCommitter(), linesPerContributor.get(b.getCommitter()) + 1);
+            //Config Class with paths and dates that are constant
+            Config config = new Config();
+            List<String> filesList = new ArrayList<>();
+            boolean isRepeated = false;
+            double cLCO = -1;
+            double cLCA = -1;
+            String authorName = "";
+            for (Modification m : commit.getModifications()) {
+                List<BlamedLine> bl = null;
+                HashMap<String, Integer> linesPerContributor = null;
+                if (m.getFileName().contains(specificPath)) {
+                    //TODO Ecanpsulate into a method that returns Object <linesPerContributor,AuthorName>
+                    File file = new File(m.getFileName());
+                    String fileName = file.getName();
+                    //Add todos here add the case that the modifications added new file
+                    if (!m.getType().equals("ADD")) {
+                        bl = repo.getScm().blame(m.getFileName(), commit.getHash(), true);
+                        linesPerContributor = new HashMap<String, Integer>();
+                        for (BlamedLine b : bl) {
+                            authorName = b.getAuthor();
+                            if (!linesPerContributor.containsKey(b.getCommitter())) {
+                                linesPerContributor.put(b.getCommitter(), 1);
+                            } else {
+                                linesPerContributor.put(b.getCommitter(), linesPerContributor.get(b.getCommitter()) + 1);
+                            }
                         }
+                        //Ask giannis, dimmtrys one to know about
+                        //TODO test this calculation
+                        cLCO = calculateLineContributorsOwnership(linesPerContributor, bl.size());
+                        //TODO test this calculation
+                        cLCA = calculateLineContributorsAuthor(linesPerContributor, bl.size(), authorName);
                     }
-                    //Ask giannis, dimmtrys one to know about
-                    //TODO test this calculation
-                     cLCO = calculateLineContributorsOwnership(linesPerContributor, bl.size());
-                    //TODO test this calculation
-                     cLCA = calculateLineContributorsAuthor(linesPerContributor, bl.size(), authorName);
-                }
-                //Creates file Ownership information from Starting to commit date
-                //TODO:Part 2 test this method, this is ready
-                //TODO Use a Hash Next time with and Object next time
+                    //Creates file Ownership information from Starting to commit date
+                    //TODO:Part 2 test this method, this is ready
+                    //TODO Use a Hash Next time with and Object next time
                     int lineContributorsMinor = calculateMinorLineContributors(linesPerContributor, bl.size());
                     int lineContibutorsMajor = calculateMajorLineContributors(linesPerContributor, bl.size());
                     filesList.add(fileName);
                     FileInfo fileInfo = createFileInfoUntilCommitDate(repo, commit, config, file, fileName);
                     fileInfo.setFilePackage(m.getFileName());
                     fileInfo.setAuthorName(authorName);
-                    fileInfo.setTotalLineContributors(linesPerContributor == null? -1 : linesPerContributor.size());
+                    fileInfo.setTotalLineContributors(linesPerContributor == null ? -1 : linesPerContributor.size());
                     fileInfo.setLineContributorsMinor(lineContributorsMinor);
                     fileInfo.setLineContributorsMajor(lineContibutorsMajor);
                     fileInfo.setLineContributorsOwnership(cLCO);
@@ -157,11 +157,12 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
                     fileInfo.setLineContributoesAuthorOwner(cLCA == cLCO);
                     fileInfoList.add(fileInfo);
 
-                CommitInfo commitInfo = new CommitInfo(commit.getHash(),commit.getCommitter().getName(),0,commit.getMsg(),commit.getDate(),fileInfoList);
-                commitInfo.setFilesInfo(fileInfoList);
-                commitInfoMap.put(commit.getHash(),commitInfo);
+                    CommitInfo commitInfo = new CommitInfo(commit.getHash(), commit.getCommitter().getName(), 0, commit.getMsg(), commit.getDate(), fileInfoList);
+                    commitInfo.setFilesInfo(fileInfoList);
+                    commitInfoMap.put(commit.getHash(), commitInfo);
 
-            }//End of big for cycle
+                }//End of big for cycle
+            }
         }
     }
 
