@@ -18,9 +18,8 @@ public class main {
 
         MinerStudy minerStudy = new MinerStudy();
         minerStudy.initalize();
-        minerStudy.execute();
 
-/*
+        /*
 		if (args.length == 4) {
 		    System.out.println("Creating Table From Git Project in Path:" + args[0]);
 			System.out.println("Creating Table From Project in Path:" + args[1]);

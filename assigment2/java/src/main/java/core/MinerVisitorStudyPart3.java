@@ -177,6 +177,7 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
         }
 
         public void incrementPostReleaseBug() {
+
             this.postReleaseBug++;
         }
 
@@ -210,6 +211,10 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
 
         public void setBugCommitFileNameMap(Map<PairCommitFile, Integer> bugCommitFileNameMap) {
             this.bugCommitFileNameMap = bugCommitFileNameMap;
+        }
+
+        public void setPostReleaseBug(int postReleaseBug) {
+            this.postReleaseBug = postReleaseBug;
         }
     }
 

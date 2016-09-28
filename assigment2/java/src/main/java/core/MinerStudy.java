@@ -6,7 +6,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import br.com.metricminer2.MetricMiner2;
 import br.com.metricminer2.RepositoryMining;
@@ -55,6 +58,8 @@ public class MinerStudy implements Study {
         List<MinerVisitorStudyPart3.InductedBugMetrics> listOfInducedBugs = minerVisitorStudyPart3.getInductedBugMetricsList();
 
         List<MinerVisitorStudyPart3.PairCommitFile> alreadyPrinted = new ArrayList<>();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+
         //Part 3 Result:
         try {
         Path path = Paths.get("output.csv");
@@ -67,23 +72,44 @@ public class MinerStudy implements Study {
             Charset charset = Charset.forName("US-ASCII");
             BufferedWriter writer = Files.newBufferedWriter(path, charset);
 
-            String bugInducedInfo = "";
+
+            //mapOfCommitInfo.entrySet().stream().
+
+            String bugInducedInfo = 0+ " " +0+ " " +0+ " " +0+ " " +0;
             for (Map.Entry<String, CommitInfo> commitInfo : mapOfCommitInfo.entrySet()) {
                 for (FileInfo fileInfo : commitInfo.getValue().getFilesInfo()) {
+                    int bugInductedCountPerFile = 0;
+
+                    List<MinerVisitorStudyPart3.PairCommitFile> pairCommitFiles = listOfInducedBugs.stream()
+                            .filter(
+                            pcf->pcf.getBugCommitFileNameMap().entrySet().stream().filter(
+                                    pcf1->pcf1.getKey().getCommitHash().equals(commitInfo.getValue().getHash())&&pcf1.getKey().getFileName().equals(fileInfo.getFilePackage())).collect(Collectors.toList()));
+//
+  //                       i.getBugCommitFileNameMap().entrySet().stream().filter((k) -> k.getKey().getFileName().equals(fileInfo.getFilePackage())
+ //                               && k.getKey().getCommitHash().equals(commitInfo.getValue().getHash())).collect(Collectors.toMap());
+//                    });
 
                     //Check for induced Bugs, if this commitHast and File is present in any of the ListOfInducedBugs then add InducedBugInfo else 0
-                    for (MinerVisitorStudyPart3.InductedBugMetrics lib : listOfInducedBugs) {
-                        for (Map.Entry<MinerVisitorStudyPart3.PairCommitFile, Integer> entry : lib.getBugCommitFileNameMap().entrySet()) {
-                            if (entry.getKey().getCommitHash().equals(commitInfo.getKey()) && entry.getKey().getFileName().equals(fileInfo.getFileName())) {
-                                bugInducedInfo = entry.getValue() + " " + lib.getPostReleaseBug() + " " + lib.getDevTimeBug() + " " + lib.getFixCommitHash() + " " + lib.getFixCommitTimeStamp();
-                                break;
-                            }
-                        }}
+//                   for (MinerVisitorStudyPart3.InductedBugMetrics lib : listOfInducedBugs) {
+//                        for (Map.Entry<MinerVisitorStudyPart3.PairCommitFile, Integer> entry : lib.getBugCommitFileNameMap().entrySet()) {
+//                            if (entry.getKey().getCommitHash().equals(commitInfo.getKey()) && entry.getKey().getFileName().equals(fileInfo.getFilePackage())) {
+//                                bugInductedCountPerFile = entry.getValue() + bugInductedCountPerFile;
+//                                if((lib.getPostReleaseBug()>=1) && (bugInductedCountPerFile > 1)){
+//                                    lib.incrementPostReleaseBug();
+//                                }
+//                                else if( (lib.getDevTimeBug() >= 1) && (bugInductedCountPerFile > 1)){
+//                                    lib.incrementDevTimeBugs();
+//                                }
+//                                bugInducedInfo = bugInductedCountPerFile + " " + lib.getPostReleaseBug() + " " + lib.getDevTimeBug() + " " + lib.getFixCommitHash() + " " + format1.format(lib.getFixCommitTimeStamp().getTime());
+//
+//                            }
+//                        }
+//                   }
                         String commitKey = commitInfo.getKey();
                         String fileName = fileInfo.getFileName();
                         String filePackage = fileInfo.getFilePackage();
                         String commiter = commitInfo.getValue().getCommiter();
-                        String date = commitInfo.getValue().getDate().getTime().toString();
+                        String date = format1.format(commitInfo.getValue().getDate().getTime());
                         String totalLineContrib = String.valueOf(fileInfo.getTotalLineContributors());
                         String lineContribMinor = String.valueOf(fileInfo.getLineContributorsMinor());
                         String lineContribMajor = String.valueOf(fileInfo.getLineContributorsMajor());
@@ -96,10 +122,10 @@ public class MinerStudy implements Study {
                         String owner = String.valueOf(fileInfo.getOwner());
 
 
-                        MinerVisitorStudyPart3 keyPair = new MinerVisitorStudyPart3("");
-                        MinerVisitorStudyPart3.PairCommitFile pcf = keyPair.new PairCommitFile(commitKey,fileName);
-                        if(!alreadyPrinted.contains(pcf)){
-                            alreadyPrinted.add(pcf);
+                        //MinerVisitorStudyPart3 keyPair = new MinerVisitorStudyPart3("");
+                        //MinerVisitorStudyPart3.PairCommitFile pcf = keyPair.new PairCommitFile(commitKey,fileName);
+                        //if(!alreadyPrinted.contains(pcf)){
+                        //    alreadyPrinted.add(pcf);
                         System.out.println(commitKey + " " + fileName + " " + filePackage + " " + commiter
                                 + " " + date + " " + totalLineContrib + " " + lineContribMinor + " " + lineContribMajor
                                 + " " + lineContribOwnership + " " + lineContributorsAuthor
@@ -108,14 +134,13 @@ public class MinerStudy implements Study {
                                 + " " + 0 + " " + 0 + " " + bugInducedInfo);
 
                         //TODO Missing Commit Contributors Author Commit Contrib Auth Owner
-                        writer.write(commitInfo.getKey() + " " + fileInfo.getFileName() + " " + fileInfo.getFilePackage() + " " + commitInfo.getValue().getCommiter()
-                                + " " + commitInfo.getValue().getDate().getTime() + " " + fileInfo.getTotalLineContributors()
-                                + " " + fileInfo.getLineContributorsMinor() + " " + fileInfo.getLineContributorsMajor()
-                                + " " + fileInfo.getLineContributorsOwnership() + " " + fileInfo.getLineContributorsAuthor()
-                                + " " + fileInfo.getLineContributorsAuthorOwner() + " " + fileInfo.getTotalContributors()
-                                + " " + fileInfo.getMinor() + " " + fileInfo.getMajor() + " " + fileInfo.getOwner()
+                        writer.write(commitKey + " " + fileName + " " + filePackage + " " + commiter
+                                + " " + date + " " + totalLineContrib + " " + lineContribMinor + " " + lineContribMajor
+                                + " " + lineContribOwnership + " " + lineContributorsAuthor
+                                + " " + lineContributorOwner + " " + totalContributors
+                                + " " + minor + " " + major + " " + owner
                                 + " " + 0 + " " + 0 + " " + bugInducedInfo+"\n");
-                        }
+                        //}
                 }
             }
 
