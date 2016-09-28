@@ -10,12 +10,12 @@
     </appender>
 
     <category name="br.com.metricminer2">
-        <priority value="INFO"/>
+        <priority value="OFF"/>
         <appender-ref ref="main"/>
     </category>
 
     <category name="/">
-        <priority value="INFO"/>
+        <priority value="OFF"/>
         <appender-ref ref="main"/>
     </category>
 

@@ -31,7 +31,7 @@ public class MinerStudy implements Study {
         //TODO use dates from Config formatting to calendar method should be added
         //TODO To create the calendat stuff parse get the date from config and parse it
         new RepositoryMining()
-                .in(GitRepository.singleProject("C:\\Lucene\\lucene-solr"))
+                .in(GitRepository.singleProject("E:\\MiningRepositories\\lune\\lucene-solr"))
                 .through(Commits.betweenDates(new GregorianCalendar(2013, Calendar.JANUARY, 01),
                         new GregorianCalendar(2013, Calendar.DECEMBER, 31)))
                 .withThreads(4)
@@ -44,7 +44,7 @@ public class MinerStudy implements Study {
 
         MinerVisitorStudyPart3 minerVisitorStudyPart3 = new MinerVisitorStudyPart3("lucene/core/src/java");
         new RepositoryMining()
-                .in(GitRepository.singleProject("C:\\Lucene\\lucene-solr"))
+                .in(GitRepository.singleProject("E:\\MiningRepositories\\lune\\lucene-solr"))
                 .through(Commits.betweenDates(new GregorianCalendar(2013, Calendar.JANUARY, 01),
                         new GregorianCalendar(2016, Calendar.JANUARY, 01)))
                 .withThreads(4)
@@ -54,6 +54,7 @@ public class MinerStudy implements Study {
 
         List<MinerVisitorStudyPart3.InductedBugMetrics> listOfInducedBugs = minerVisitorStudyPart3.getInductedBugMetricsList();
 
+        List<MinerVisitorStudyPart3.PairCommitFile> alreadyPrinted = new ArrayList<>();
         //Part 3 Result:
         try {
         Path path = Paths.get("output.csv");
@@ -75,8 +76,9 @@ public class MinerStudy implements Study {
                         for (Map.Entry<MinerVisitorStudyPart3.PairCommitFile, Integer> entry : lib.getBugCommitFileNameMap().entrySet()) {
                             if (entry.getKey().getCommitHash().equals(commitInfo.getKey()) && entry.getKey().getFileName().equals(fileInfo.getFileName())) {
                                 bugInducedInfo = entry.getValue() + " " + lib.getPostReleaseBug() + " " + lib.getDevTimeBug() + " " + lib.getFixCommitHash() + " " + lib.getFixCommitTimeStamp();
+                                break;
                             }
-                        }
+                        }}
                         String commitKey = commitInfo.getKey();
                         String fileName = fileInfo.getFileName();
                         String filePackage = fileInfo.getFilePackage();
@@ -93,6 +95,11 @@ public class MinerStudy implements Study {
                         String major = String.valueOf(fileInfo.getMajor());
                         String owner = String.valueOf(fileInfo.getOwner());
 
+
+                        MinerVisitorStudyPart3 keyPair = new MinerVisitorStudyPart3("");
+                        MinerVisitorStudyPart3.PairCommitFile pcf = keyPair.new PairCommitFile(commitKey,fileName);
+                        if(!alreadyPrinted.contains(pcf)){
+                            alreadyPrinted.add(pcf);
                         System.out.println(commitKey + " " + fileName + " " + filePackage + " " + commiter
                                 + " " + date + " " + totalLineContrib + " " + lineContribMinor + " " + lineContribMajor
                                 + " " + lineContribOwnership + " " + lineContributorsAuthor
@@ -108,7 +115,7 @@ public class MinerStudy implements Study {
                                 + " " + fileInfo.getLineContributorsAuthorOwner() + " " + fileInfo.getTotalContributors()
                                 + " " + fileInfo.getMinor() + " " + fileInfo.getMajor() + " " + fileInfo.getOwner()
                                 + " " + 0 + " " + 0 + " " + bugInducedInfo+"\n");
-                    }
+                        }
                 }
             }
 
