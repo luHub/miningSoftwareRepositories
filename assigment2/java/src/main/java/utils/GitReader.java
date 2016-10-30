@@ -1,18 +1,23 @@
 package utils;
 
+import miner_pojos.CommitInfo;
+import miner_pojos.CommitInfov2;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 
 public class GitReader {
-	
+
+
+
+
 	//This is map that will be running in 2 threads so caution
 	
 	
@@ -65,11 +70,11 @@ public class GitReader {
 	 * @throws IOException 
 	 * @throws InterruptedException 
 	 */
-	public static List<String> readGitPaths(String path) throws IOException, InterruptedException{
-		List<String> listOfPaths = new ArrayList<String>();
+	public static List<Path> readGitJavaPaths(Path gitProjectPath) throws IOException, InterruptedException{
+		List<Path> listOfPaths = new ArrayList<Path>();
 		String[] command = {"CMD", "/C", "git ls-files"};
 	    ProcessBuilder probuilder = new ProcessBuilder(command);
-	    probuilder.directory(new File(path));
+	    probuilder.directory(gitProjectPath.toFile());
 	    Process process;
             process = probuilder.start();
             //Read out dir output
@@ -79,9 +84,9 @@ public class GitReader {
             String line;
             while ((line = br.readLine()) != null) {
             	if(PathFilters.checkPathFilterEnding(line,"java")){
-            		listOfPaths.add(line);
-                	//TODO Change for a logger
-                	System.out.println("javaFile: " + line);
+					Path path = Paths.get(gitProjectPath+"\\"+line);
+					listOfPaths.add(path);
+                	//TODO  Add Logger
                 }
             }
             int exitValue = process.waitFor();
@@ -186,7 +191,60 @@ public class GitReader {
 		
 		return devInformationMap;
 	}
-		
-		
-		
+
+
+	/**
+	 * Git Commit List from each File
+	 */
+	public static LinkedList<CommitInfov2> getCommitsFromFile(Path projectPath, Path path) throws IOException, InterruptedException {
+        int HASH_CODE = 0;
+		int JIRA_ID=1;
+		LinkedList<CommitInfov2> commitsList = new LinkedList<>();
+		String[] command ={"CMD", "/C", "git log --pretty=oneline "+ path.toString().replaceAll("\\\\","/")};
+		ProcessBuilder probuilder = new ProcessBuilder(command);
+		probuilder.directory(new File(projectPath.toString()));
+		Process process;
+		process = probuilder.start();
+		//Read out dir output
+		InputStream is = process.getInputStream();
+		InputStreamReader isr = new InputStreamReader(is);
+		BufferedReader br = new BufferedReader(isr);
+		String line;
+		while ((line = br.readLine()) != null) {
+			String[] splitLine = line.split(" ");
+			commitsList.add(new CommitInfov2(splitLine[HASH_CODE],splitLine[JIRA_ID].replace(":",""),path));
+		}
+		int exitValue = process.waitFor();
+		//Close InputStream
+		br.close();
+		isr.close();
+		process.destroy();
+        return  commitsList;
+	}
+
+    public static String gitGetFileVersion(Path projectPath, CommitInfov2 commitInfov2)  throws IOException, InterruptedException  {
+		//Relative Path
+		String relative = projectPath.toFile().toURI().relativize(commitInfov2.getPath().toFile().toURI()).getPath();
+        String[] command ={"CMD", "/C", "git show "+ commitInfov2.getHash()+":./"+ relative.replaceAll("\\\\","/")};
+        ProcessBuilder probuilder = new ProcessBuilder(command);
+        probuilder.directory(new File(projectPath.toString()));
+        Process process;
+        process = probuilder.start();
+        //Read out dir output
+        InputStream is = process.getInputStream();
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        StringBuffer strBuffer = new StringBuffer();
+		String line;
+        while ((line = br.readLine()) != null) {
+            strBuffer.append(line.toString());
+        	strBuffer.append("\n");
+		}
+        int exitValue = process.waitFor();
+        //Close InputStream
+        br.close();
+        isr.close();
+        process.destroy();
+        return  strBuffer.toString();
+    }
 }

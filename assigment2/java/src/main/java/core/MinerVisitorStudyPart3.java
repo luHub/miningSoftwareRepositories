@@ -6,13 +6,13 @@ import br.com.metricminer2.persistence.PersistenceMechanism;
 import br.com.metricminer2.scm.BlamedLine;
 import br.com.metricminer2.scm.CommitVisitor;
 import br.com.metricminer2.scm.SCMRepository;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import miner_pojos.DiffInfo;
 import utils.GitInfo;
-import utils.JiraLuceneIdFinder;
+import utils.JiraExplore;
 import utils.JiraReader;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by LuHub on 9/26/2016.
@@ -25,7 +25,7 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
         this.specificPath=specificPath;
     }
 
-    private JiraLuceneIdFinder jiraLuceneIdFinder = new JiraLuceneIdFinder();
+    private JiraExplore jiraExplore = new JiraExplore();
     private static final String[] keywordksList = {"fix","error", "bug", "fix", "issue", "mistake", "incorrect", "fault", "defect", "flaw","typo"};
     private List<InductedBugMetrics> inductedBugMetricsList = new ArrayList<>();
 
@@ -36,8 +36,8 @@ public class MinerVisitorStudyPart3 implements CommitVisitor {
             String commitMessage = commitFix.getMsg();
             for (Modification m : commitFix.getModifications()) {
                 if (m.getFileName().contains(specificPath)) {
-                    String issueId = jiraLuceneIdFinder.readLuceneId(commitMessage);
-                    if (jiraLuceneIdFinder.isLuceneIssue(commitMessage) && JiraReader.IsBug(issueId)) {
+                    String issueId = jiraExplore.readIssueId(commitMessage,Pattern.compile("Lucene-[0-9]+"));
+                    if (jiraExplore.isIssue(commitMessage,Pattern.compile("Lucene-[0-9]+")) && JiraReader.IsBug(issueId,"https://issues.apache.org/jira/rest/api/2/issue/")) {
                         InductedBugMetrics inductedBugMetrics = populateInducedMetric(repo, commitFix, m);
                         this.inductedBugMetricsList.add(inductedBugMetrics);
                     } else if (hasKeywords(keywordksList, commitMessage)) {

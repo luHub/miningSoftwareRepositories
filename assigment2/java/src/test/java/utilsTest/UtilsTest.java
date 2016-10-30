@@ -3,6 +3,8 @@ package utilsTest;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,7 @@ import utils.PathFilters;
 
 
 public class UtilsTest {
+
 
 	/**
 	 * Test that filters are working properly for all *.java files
@@ -45,10 +48,10 @@ public class UtilsTest {
 	 */
 	@Test
 	public void readGitPathsTest() throws IOException, InterruptedException{
-		List<String> listOfPathFiles = GitReader.readGitPaths("E:\\MiningRepositories\\workspace\\assigment1");
+		List<Path> listOfPathFiles = GitReader.readGitJavaPaths(Paths.get("E:\\MiningRepositories\\workspace\\assigment1"));
 		assertTrue("File Size is Zero",listOfPathFiles.size()>0);
-		for(String file : listOfPathFiles){
-			boolean expectedValue = PathFilters.checkPathFilterEnding(file, "java");
+		for(Path path : listOfPathFiles){
+			boolean expectedValue = PathFilters.checkPathFilterEnding(path.toAbsolutePath().toString(), "java");
 			assertTrue(expectedValue);
 		}
 	}
@@ -62,8 +65,8 @@ public class UtilsTest {
 	public void readFileCommitsTest() throws IOException, InterruptedException {
 		String since = "2014-01-01";
 		String until = "2016-12-25";
-		List<String> listOfPathFiles = GitReader.readGitPaths("E:\\MiningRepositories\\workspace\\assigment1");
-		String path = listOfPathFiles.get(0).replace("/", "\\");
+		List<Path> listOfPathFiles = GitReader.readGitJavaPaths(Paths.get("E:\\MiningRepositories\\workspace\\assigment1"));
+		String path = listOfPathFiles.get(0).toString().replaceAll("/", "\\");
 		GitReader gitReader = new GitReader();
 		Map<String, Integer> map = gitReader.readFileCommitsFromDevelopers("E:/MiningRepositories/workspace/","E:/MiningRepositories/workspace/assigment1/"+path, since, until);
 		assertTrue("File Size is Zero",map.size()>0);

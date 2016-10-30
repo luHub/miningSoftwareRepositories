@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,13 +28,13 @@ public class TableInfoCreator {
 	 */
 	public static List<FileInfo> createTable(String gitProjectPath,String projectPath, String since, String until)
 			throws IOException, InterruptedException {
-		List<String> listOfPathFiles = GitReader.readGitPaths(projectPath);
+		List<Path> listOfPathFiles = GitReader.readGitJavaPaths(Paths.get(projectPath));
 		List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
-		for (String filePath : listOfPathFiles) {
+		for (Path filePath : listOfPathFiles) {
 			GitReader gitReader = new GitReader();
 			System.out.println("Reading Commits in File: "+filePath);
-			Map<String, Integer> devMap = gitReader.readFileCommitsFromDevelopers(gitProjectPath,projectPath+"\\"+ filePath.replace("/", "\\"), since, until);
-			fileInfoList.add(FileInfoCreator.createFileInfo(filePath, devMap));
+			Map<String, Integer> devMap = gitReader.readFileCommitsFromDevelopers(gitProjectPath,projectPath+"\\"+ filePath.toAbsolutePath().toString().replace("/", "\\"), since, until);
+			fileInfoList.add(FileInfoCreator.createFileInfo(filePath.toAbsolutePath().toString(), devMap));
 		}
 		return fileInfoList;
 	}

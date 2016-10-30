@@ -80,10 +80,10 @@ public class MinerStudy implements Study {
                 for (FileInfo fileInfo : commitInfo.getValue().getFilesInfo()) {
                     int bugInductedCountPerFile = 0;
 
-                    List<MinerVisitorStudyPart3.PairCommitFile> pairCommitFiles = listOfInducedBugs.stream()
-                            .filter(
-                            pcf->pcf.getBugCommitFileNameMap().entrySet().stream().filter(
-                                    pcf1->pcf1.getKey().getCommitHash().equals(commitInfo.getValue().getHash())&&pcf1.getKey().getFileName().equals(fileInfo.getFilePackage())).collect(Collectors.toList()));
+           //         List<MinerVisitorStudyPart3.PairCommitFile> pairCommitFiles = listOfInducedBugs.stream()
+             //               .filter(
+               //             pcf->pcf.getBugCommitFileNameMap().entrySet().stream().filter(
+                 //                   pcf1->pcf1.getKey().getCommitHash().equals(commitInfo.getValue().getHash())&&pcf1.getKey().getFileName().equals(fileInfo.getFilePackage())).collect(Collectors.toList()));
 //
   //                       i.getBugCommitFileNameMap().entrySet().stream().filter((k) -> k.getKey().getFileName().equals(fileInfo.getFilePackage())
  //                               && k.getKey().getCommitHash().equals(commitInfo.getValue().getHash())).collect(Collectors.toMap());

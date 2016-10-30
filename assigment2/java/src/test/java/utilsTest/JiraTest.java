@@ -1,5 +1,6 @@
 package utilsTest;
 
+import core.Config;
 import org.junit.Test;
 import utils.JiraReader;
 
@@ -16,14 +17,16 @@ import static org.junit.Assert.assertTrue;
 public class JiraTest {
     @Test
     public void jiraLuceneIsBugTest1(){
+        String jiraUrl ="https://issues.apache.org/jira/rest/api/2/issue/";
         String luceneJavaBug="LUCENE-7228";
-        boolean isBug=JiraReader.IsBug(luceneJavaBug);
+        boolean isBug=JiraReader.IsBug(luceneJavaBug, jiraUrl);
         assertTrue(isBug);
     }
     @Test
     public void jiraLuceneIsNotBugTest1(){
+        String jiraUrl ="https://issues.apache.org/jira/rest/api/2/issue/";
         String luceneFeature="LUCENE-7381";
-        boolean isBug=JiraReader.IsBug(luceneFeature);
+        boolean isBug=JiraReader.IsBug(luceneFeature, jiraUrl);
         assertFalse(isBug);
     }
 }

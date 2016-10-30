@@ -109,7 +109,7 @@ public class MinerVisitorStudyPart1AndPart2 implements CommitVisitor {
             List<FileInfo> fileInfoList = new ArrayList<>();
 
             //Config Class with paths and dates that are constant
-            Config config = new Config();
+            Config config = Config.getInstace();
             List<String> filesList = new ArrayList<>();
             boolean isRepeated = false;
             double cLCO = -1;
