@@ -1,0 +1,5 @@
+package cryptoOne;
+
+public class TestOne extends AssigmentI {
+
+}

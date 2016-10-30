@@ -101,5 +101,6 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.3" level="project" />
     <orderEntry type="library" name="changedistiller-0.0.1-SNAPSHOT-jar-with-dependencies" level="project" />
+    <orderEntry type="library" name="changedistiller-0.0.1-SNAPSHOT-javadoc" level="project" />
   </component>
 </module>
