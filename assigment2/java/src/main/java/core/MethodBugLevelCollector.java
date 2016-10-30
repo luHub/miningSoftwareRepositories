@@ -116,4 +116,8 @@ public class MethodBugLevelCollector {
     private LinkedList<CommitInfov2> findCommitHistory(String fromDate, String toDate, Path javafilePath) throws IOException, InterruptedException {
             return GitReader.getCommitsFromFile(this.gitProjectPath,javafilePath);
     }
+
+
+    //Example Distiller
+
 }
