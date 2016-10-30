@@ -15,9 +15,6 @@ import java.io.IOException;
 
 public class MethodBugLevelStudyTest {
 
-    private String initDate="2011-01-01";
-    private String finalDate= "2014-01-01";
-    private String path = "E:\\MiningRepositories\\workspace\\assigment1";
 
     private MethodBugLevelCollector methodBugLevelCollector;
 
