@@ -37,16 +37,34 @@ public class ExampleDistiller {
 
         List<SourceCodeChange> changes = distiller.getSourceCodeChanges();
         if (changes != null) {
-            System.out.println("Here2");
+            System.out.println("*");
             System.out.println("Changes: "+changes);
             for (SourceCodeChange change : changes) {
                 // see Javadocs for more information
-                System.out.println("Changes: "+change);
-                System.out.println("Change Parent: "+change.getParentEntity());
-                System.out.println("Changes Entity: "+change.getChangedEntity());
-                System.out.println("Changes Type: "+change.getChangeType());
-                System.out.println("Changes Significance: "+change.getSignificanceLevel());
-                System.out.println("Changes Label: "+change.getLabel());
+                System.out.println("*");
+                System.out.println("**");
+                System.out.println("****");
+        		System.out.println("Changes: " + change);
+        		System.out.println("Change Parent: " + change.getParentEntity());
+        		System.out.println("Change Parent Type: " + change.getParentEntity().getType());
+        		System.out.println("Change Parent Label: " + change.getParentEntity().getLabel());
+        		System.out.println("Change Parent End Position: " + change.getParentEntity().getEndPosition());
+        		System.out.println("Change Parent Start Position: " + change.getParentEntity().getStartPosition());
+        		System.out.println("Change Parent Unique Name: " + change.getParentEntity().getUniqueName());
+        		System.out.println("Change Parent Assosc Entities: " + change.getParentEntity().getAssociatedEntities());
+        		System.out.println("Change Parent Source Range: " + change.getParentEntity().getSourceRange());
+        		System.out.println("Changes Entity: " + change.getChangedEntity());
+        		System.out.println("Changes Entity Unique Name: " + change.getChangedEntity().getUniqueName());
+        		System.out.println("Changes Entity Source Range: " + change.getChangedEntity().getSourceRange());
+        		System.out.println("Changes Entity Modifiers: " + change.getChangedEntity().getModifiers());
+        		System.out.println("Changes Entity Associated Entities: " + change.getChangedEntity().getAssociatedEntities());
+        		System.out.println("Changes Entity Associated Type: " + change.getChangedEntity().getType());
+        		System.out.println("Changes Type: " + change.getChangeType());
+        		System.out.println("Changes Label: " + change.getLabel());
+        		System.out.println("****");
+                System.out.println("**");
+                System.out.println("*");
+        		
             }
             System.out.println("End");
         }else{

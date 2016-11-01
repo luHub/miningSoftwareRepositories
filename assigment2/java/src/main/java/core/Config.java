@@ -15,6 +15,8 @@ public class Config {
     private String projectPath;
     private String jiraIdPattern;
     private String jiraUrl;
+    private String javaV1Path;
+    private String javaV2Path;
 
 
 
@@ -36,6 +38,8 @@ public class Config {
             this.projectPath=studyProperties.getProperty("projectPath");
             this.jiraIdPattern=studyProperties.getProperty("jiraIdPattern");
             this.jiraUrl=studyProperties.getProperty("jiraUrl");
+            this.javaV1Path=studyProperties.getProperty("v1path");
+            this.javaV2Path=studyProperties.getProperty("v2path");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,4 +66,16 @@ public class Config {
     public String getJiraUrl() {
         return this.jiraUrl;
     }
+	public String getJavaV1Path() {
+		return javaV1Path;
+	}
+	public void setJavaV1Path(String javaV1Path) {
+		this.javaV1Path = javaV1Path;
+	}
+	public String getJavaV2Path() {
+		return javaV2Path;
+	}
+	public void setJavaV2Path(String javaV2Path) {
+		this.javaV2Path = javaV2Path;
+	}
 }

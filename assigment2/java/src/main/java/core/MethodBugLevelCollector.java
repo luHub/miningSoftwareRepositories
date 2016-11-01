@@ -1,17 +1,28 @@
 package core;
 
+import miner_pojos.ChangeMetric;
 import miner_pojos.CommitInfov2;
 import utils.GitReader;
 import utils.JiraExplore;
 import utils.JiraReader;
+
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
+
+import ch.uzh.ifi.seal.changedistiller.ChangeDistiller;
+import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
+import ch.uzh.ifi.seal.changedistiller.model.classifiers.EntityType;
+import ch.uzh.ifi.seal.changedistiller.model.classifiers.java.JavaEntityType;
+import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 
 /**
  * Created by mey on 10/29/2016.
@@ -25,6 +36,7 @@ public class MethodBugLevelCollector {
     private String fromDate;
     private Pattern issuePattern;
     private String jiraUrl;
+    private final Map<String,ChangeMetric> changeMetrics = new HashMap<String, ChangeMetric>();
 
     public MethodBugLevelCollector(){
         this.gitProjectPath = Paths.get(config.getProjectPath());
@@ -72,21 +84,9 @@ public class MethodBugLevelCollector {
                 try {
                     commitListHisotry = findCommitHistory(this.fromDate,this.toDate,path);
                    //3) Find which commit Fixs a Bug, isBug goes to Jira and with Finds it out using Commit Id and searching for Issue Type
-                  commitListHisotry.stream().filter((commitInfo) -> isBugFix(commitInfo)).collect(Collectors.toList()).forEach((fixedCommit)->{
+                  commitListHisotry.stream().forEach((commit)->{
                   //4) Check Previous File Version and Discover if it was a bug Fix in Method Level Comparing FixCommit File and Previous Commit.
-                  ListIterator<CommitInfov2> iterator = commitListHisotry.listIterator(commitListHisotry.indexOf(fixedCommit));
-                  if(iterator.hasPrevious()){
-                      try {
-                      String versionPrevious = gitGetFile(iterator.previous());
-                      String version = gitGetFile(fixedCommit);
-                          changeDistiller(version,versionPrevious);
-                      } catch (IOException e) {
-                          e.printStackTrace();
-                      } catch (InterruptedException e) {
-                          e.printStackTrace();
-                      }
-                  }else
-                  { System.out.print("File in Path: "+path+" have a fix but not a previous commit"); }
+                  compareFileVersions(path, commitListHisotry, commit);
               });
             } catch (IOException e) {
             e.printStackTrace();
@@ -94,16 +94,104 @@ public class MethodBugLevelCollector {
             e.printStackTrace();
         }
         });
+            //5 End Distilling
+            System.out.println("Program Finished");
         }
 
-    //TODO Discuss with andreas what to do Next
-    private void changeDistiller(String version, String versionPrevious) {
+	private void compareFileVersions(Path path, final LinkedList<CommitInfov2> commitListHisotry,
+			CommitInfov2 commit) {
+		ListIterator<CommitInfov2> iterator = commitListHisotry.listIterator(commitListHisotry.indexOf(commit));
+		// TODO check if previous is working good
+		if (iterator.hasPrevious()) {
+			try {
+				//PrepareFilesHelpers
+				String file = gitGetFile(commit);
+				FileInfoHelper fileInfo = new FileInfoHelper(commit, file,isBugFix(commit));
+				CommitInfov2 previousCommit = iterator.previous();
+				String filePrevious = gitGetFile(previousCommit);
+				FileInfoHelper filePreviousInfo = new FileInfoHelper(previousCommit, filePrevious);
+				//Call ChangeDistiller
+				changeDistiller(fileInfo, filePreviousInfo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.print("File in Path: " + path + " have a fix but not a previous commit");
+		}
+	}
 
+    private void changeDistiller(FileInfoHelper fileInfo, FileInfoHelper filePreviousInfo) throws IOException {
+		//Prepare Files Version 
+    	String filePath =Config.getInstace().getJavaV2Path();
+		File file = createFile(fileInfo,filePath);
+
+		String previousFilePath =Config.getInstace().getJavaV1Path();
+		File fileprevious = createFile(filePreviousInfo,previousFilePath); 
+		
+		System.out.println("Analizing File: "+fileInfo.getCommitInfo().getFileName()+" VS "+filePreviousInfo.getCommitInfo().getFileName());
+		System.out.println("Commit Hast: "+fileInfo.getCommitInfo().getHash()+" VS "+filePreviousInfo.getCommitInfo().getHash());
+		
+		//Call Change Distiller
+		List<SourceCodeChange> changes = runChangeDistiller(file, fileprevious);
+        updateChangeMetrics(fileInfo,changes);
+        System.out.println("End Analyzing");
+        System.out.println("*************");
     }
 
-    //TODO Change Distiller requieres 2 Files but we will pass 2 strings in order to avoid file IO and to
-    //TODO Create files, if that fails we will create files for V1 and V2 in a Buffer
-    private String gitGetFile(CommitInfov2 commitInfov2) throws IOException, InterruptedException {
+	private void updateChangeMetrics(FileInfoHelper fileInfo, List<SourceCodeChange> changes) {
+		// Key is the Complete Method Path from Change Distiller
+		
+		if (changes != null) {
+			changes.stream()
+					.filter((change) -> change.getChangedEntity().getType().equals(JavaEntityType.METHOD)
+							|| change.getParentEntity().getType().equals(JavaEntityType.METHOD))
+					.forEach((methodChange) -> {
+						addMethodToMap(methodChange);
+						this.changeMetrics.get(methodChange.getChangedEntity().getUniqueName())
+								.updateMetricsPerChange(fileInfo, methodChange);
+						
+					});
+			
+			// Update Max for each Method
+			// Update Max Deleted
+			// Update Max Added
+			//TODO Update Metrics per Commit
+			//this.changeMetrics.get(methodChange.getChangedEntity().getUniqueName())
+			//.updateMetricsPerChange(fileInfo, methodChange);
+		}
+	}
+
+	private void addMethodToMap(SourceCodeChange methodChange) {
+		if (!this.changeMetrics.containsKey(methodChange.getChangedEntity().getUniqueName())) {
+			String key = methodChange.getChangedEntity().getUniqueName();
+			ChangeMetric changeMetric = new ChangeMetric();
+			this.changeMetrics.put(key, changeMetric);
+		}
+		//TODO Check for Renames and Create and Create a join of Renames to later merger or 
+		//something like that
+	}
+
+	private List<SourceCodeChange> runChangeDistiller(File file, File fileprevious) {
+		FileDistiller distiller = ChangeDistiller.createFileDistiller(ChangeDistiller.Language.JAVA);
+        try {
+            distiller.extractClassifiedSourceCodeChanges(fileprevious, file);
+        } catch (Exception e) {
+			/*
+			 * An exception most likely indicates a bug in ChangeDistiller.
+			 * Please file a bug report at
+			 * https://bitbucket.org/sealuzh/tools-changedistiller/issues and
+			 * attach the full stack trace along with the two files that you
+			 * tried to distill.
+			 */
+            System.err.println("Warning: error while change distilling. " + e.getMessage());
+        }
+        return distiller.getSourceCodeChanges();
+
+	}
+
+	private String gitGetFile(CommitInfov2 commitInfov2) throws IOException, InterruptedException {
          return GitReader.gitGetFileVersion(this.gitProjectPath,commitInfov2);
     }
 
@@ -117,7 +205,83 @@ public class MethodBugLevelCollector {
             return GitReader.getCommitsFromFile(this.gitProjectPath,javafilePath);
     }
 
+    /**
+     * TODO Change ChangeDistiller Source Code to Accept Strings instead of files
+     * File IO Part: 
+     * 
+     */
+    	private static File createFile(FileInfoHelper fileInfoHelper,String directory) throws IOException {
+    		createPathIfNotExist(directory);
+    		Path path = Paths.get(directory + "\\" + fileInfoHelper.getCommitInfo().getFileName());
+    		if (Files.exists(path)) {
+    			Files.delete(path);
+    		}
+    		Path filePath = Files.createFile(path);
+    		Charset charset = Charset.forName("US-ASCII");
+    		BufferedWriter writer = Files.newBufferedWriter(path, charset);
+    		writer.write(fileInfoHelper.getFileBody(), 0, fileInfoHelper.getFileBody().length());
+    		writer.flush();
+    		writer.close();
+    		return filePath.toFile();
+    	}
+    	
+    	public static void createPathIfNotExist(String directory) throws IOException {
+    		// Check if directory exists
+    		Path path = Paths.get(directory);
+    		if (!Files.exists(path)) {
+    			// Create Directory
+    			Files.createDirectories(path);
+    		}
+    	}
+    	
+    	/**
+    	 * 
+    	 * @author mey
+    	 * Helper Class to compare versions
+    	 * This file Scope is only to do Change Distiller Comparison and update final list
+    	 */
+    	public class FileInfoHelper{
+    		
+    		private CommitInfov2 commitInfo;
+    		private Boolean commitFixBug;
+    		private String fileBody;
+    		
+    		public FileInfoHelper(CommitInfov2 commitInfo, String fileBody){
+    			this.commitInfo=commitInfo;
+    			this.fileBody=fileBody;
+    			this.commitFixBug=commitFixBug;
+    		}
+    		
+    		public FileInfoHelper(CommitInfov2 commitInfo, String fileBody, Boolean commitFixBug){
+    			this.commitInfo=commitInfo;
+    			this.fileBody=fileBody;
+    			this.commitFixBug=commitFixBug;
+    		}
 
-    //Example Distiller
+			public CommitInfov2 getCommitInfo() {
+				return commitInfo;
+			}
 
+			public void setCommitInfo(CommitInfov2 commitInfo) {
+				this.commitInfo = commitInfo;
+			}
+
+			public String getFileBody() {
+				return fileBody;
+			}
+
+			public void setFileBody(String fileBody) {
+				this.fileBody = fileBody;
+			}
+
+			public Boolean getCommitFixBug() {
+				return commitFixBug;
+			}
+
+			public void setCommitFixBug(Boolean commitFixBug) {
+				this.commitFixBug = commitFixBug;
+			}
+    		
+    	}
+    	
 }

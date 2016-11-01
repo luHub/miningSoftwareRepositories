@@ -26,5 +26,10 @@ public class MethodBugLevelStudyTest {
     public void populateMetrics() throws IOException, InterruptedException {
         methodBugLevelCollector.populateMetrics();
     }
+    
+    @Test
+    public void rapidMinerTest(){
+    	
+    }
 
 }

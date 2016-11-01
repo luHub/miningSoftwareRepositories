@@ -198,9 +198,11 @@ public class GitReader {
 	 */
 	public static LinkedList<CommitInfov2> getCommitsFromFile(Path projectPath, Path path) throws IOException, InterruptedException {
         int HASH_CODE = 0;
-		int JIRA_ID=1;
+        int COMMITER = 1;
+        int JIRA_ID=2;
 		LinkedList<CommitInfov2> commitsList = new LinkedList<>();
-		String[] command ={"CMD", "/C", "git log --pretty=oneline "+ path.toString().replaceAll("\\\\","/")};
+		String format = "%H,,,%an,,,%s";
+		String[] command ={"CMD", "/C", "git log --pretty="+format+" "+ path.toString().replaceAll("\\\\","/")};
 		ProcessBuilder probuilder = new ProcessBuilder(command);
 		probuilder.directory(new File(projectPath.toString()));
 		Process process;
@@ -211,8 +213,9 @@ public class GitReader {
 		BufferedReader br = new BufferedReader(isr);
 		String line;
 		while ((line = br.readLine()) != null) {
-			String[] splitLine = line.split(" ");
-			commitsList.add(new CommitInfov2(splitLine[HASH_CODE],splitLine[JIRA_ID].replace(":",""),path));
+			String[] splitLine = line.split(",,,");
+			commitsList.add(new CommitInfov2(splitLine[HASH_CODE],splitLine[JIRA_ID].replace(":",""),path,splitLine[COMMITER]));
+			
 		}
 		int exitValue = process.waitFor();
 		//Close InputStream
