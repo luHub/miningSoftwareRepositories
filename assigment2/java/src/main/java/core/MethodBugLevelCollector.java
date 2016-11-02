@@ -4,8 +4,6 @@ import miner_pojos.ChangeMetric;
 import miner_pojos.CommitInfov2;
 import utils.GitReader;
 import utils.JiraExplore;
-import utils.JiraReader;
-import utils.TableOutput;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,18 +13,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
 import ch.uzh.ifi.seal.changedistiller.ChangeDistiller;
 import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
 import ch.uzh.ifi.seal.changedistiller.model.classifiers.ChangeType;
-import ch.uzh.ifi.seal.changedistiller.model.classifiers.EntityType;
 import ch.uzh.ifi.seal.changedistiller.model.classifiers.java.JavaEntityType;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
-import core.MethodBugLevelCollector.UpdatesForCommits;
 
 /**
  * Created by mey on 10/29/2016.
@@ -153,11 +147,18 @@ public class MethodBugLevelCollector {
 		counter++;
 		if (changes != null) {
 			//TODO Filter properly for case of parent method and child method
-			changes.stream().filter((change) ->  change.getParentEntity().getType().equals(JavaEntityType.METHOD))
+			changes.stream().filter((change) ->  change.getRootEntity().getType().equals(JavaEntityType.METHOD)|| change.getParentEntity().getType().equals(JavaEntityType.METHOD))
 					.forEach((methodChange) -> {
-						addMethodToMap(methodChange);
-						Key mapKey = new Key(methodChange.getParentEntity().getUniqueName());
-						this.changeMetrics.get(new Key(methodChange.getParentEntity().getUniqueName()))
+						Key mapKey;
+						if(methodChange.getRootEntity().getType().equals(JavaEntityType.METHOD)){
+							 mapKey = new Key(methodChange.getRootEntity().getUniqueName());
+							addMethodToMap(methodChange,mapKey,methodChange.getRootEntity().getUniqueName());
+						}else{
+							System.out.println("Unique Name for Analysis: "+methodChange.getParentEntity().getUniqueName());
+							 mapKey = new Key(methodChange.getParentEntity().getUniqueName());
+							addMethodToMap(methodChange,mapKey,methodChange.getParentEntity().getUniqueName());
+						}
+						this.changeMetrics.get(mapKey)
 								.updateMetricsPerChange(fileInfo, methodChange);
 						//Changes per Commit
 						Optional<UpdatesForCommits> opt = updatesForCommitsList.stream()
@@ -182,7 +183,7 @@ public class MethodBugLevelCollector {
 					this.changeMetrics.get(ufc.get().getMethodName()).updateNumberOfBugs();
 				}
 			} else {
-				System.out.println("ERROR Method Should be Already Added");
+				System.out.println("No Changes at Method Level");
 			}
 			
 			if (counter > 30) {
@@ -235,10 +236,8 @@ public class MethodBugLevelCollector {
 		writer.close();
 	}
 
-	private void addMethodToMap(SourceCodeChange methodChange) {
-		String uniqueName = methodChange.getParentEntity().getUniqueName();
+	private void addMethodToMap(SourceCodeChange methodChange,Key key,String uniqueName) {
 		ChangeMetric changeMetric = new ChangeMetric(uniqueName); 
-		Key key = new Key(uniqueName);
 		if (!this.changeMetrics.containsKey(key)) {
 			//System.out.println("Change Entity Parent: "+methodChange.getParentEntity().getType());
 			//System.out.println("Changed Entity: "+methodChange.getChangedEntity().getUniqueName());

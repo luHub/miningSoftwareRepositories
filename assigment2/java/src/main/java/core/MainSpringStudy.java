@@ -20,7 +20,7 @@ public class MainSpringStudy {
         String V1="1.0%20final";
         String V2="2.0%20final";
         String V3="3.0.1";
-        String V4="4.0.1";
+        String V4="4.0.1"; 
 
         System.out.print("Major"+"\n");
         //String v1Url="https://jira.spring.io/rest/api/2/search?jql=project%20%3D%20SPR%20AND%20issuetype%20%3D%20Bug%20AND%20(%20affectedVersion%20>%20\"1.0%20final\"%20AND%20affectedVersion%20<%20\"2.0%20final\")";

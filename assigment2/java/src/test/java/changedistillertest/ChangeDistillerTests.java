@@ -3,7 +3,6 @@ package changedistillertest;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -75,7 +74,7 @@ public class ChangeDistillerTests {
 	            System.out.println("*");
 			}
 
-			changes.stream().filter((change) ->  change.getParentEntity().getType().equals(JavaEntityType.METHOD))
+			changes.stream().filter((change) -> change.getRootEntity().getType().equals(JavaEntityType.METHOD)||change.getParentEntity().getType().equals(JavaEntityType.METHOD))
 			.forEach((methodChange) -> {
 				changeMetric.updateMetricsPerChange(fileInfo, methodChange);
 			});
@@ -108,7 +107,7 @@ public class ChangeDistillerTests {
 		}
 		List<SourceCodeChange> changes = distiller.getSourceCodeChanges();
 		if (changes != null) {
-			changes.stream().filter((change) ->  change.getParentEntity().getType().equals(JavaEntityType.METHOD))
+			changes.stream().filter((change) -> change.getRootEntity().getType().equals(JavaEntityType.METHOD)  ||  change.getParentEntity().getType().equals(JavaEntityType.METHOD))
 			.forEach((methodChange) -> {
 				changeMetric.updateMetricsPerChange(fileInfo, methodChange);
 			});
@@ -119,23 +118,19 @@ public class ChangeDistillerTests {
 		Assert.assertFalse(changeMetric.getElseAdded()>0);
 	}
 	
+	//TODO
 	@Test
-	public void removeElseTwoLevelNestedConditionalExpressionTest(){
-		
-	}
+	public void removeElseTwoLevelNestedConditionalExpressionTest(){}
+
+	//TODO
+	@Test
+	public void removeElseFromLoopTest(){}
 	
+	//TODO
 	@Test
-	public void removeElseFromLoopTest(){
-		
-	}
+	public void removeElseFromNestedLoopTest(){}
 	
+	//TODO
 	@Test
-	public void removeElseFromNestedLoopTest(){
-		
-	}
-	
-	@Test
-	public void removeElseFromNestedLoopTwoLevelsTest(){
-		
-	}
+	public void removeElseFromNestedLoopTwoLevelsTest(){}
 }
