@@ -4,25 +4,33 @@ import org.junit.Test;
 
 public class ChangeDistillerTests {
 
+	@Test
+	public void removeElseFromMethodTest(){
+		
+	}
 	
 	@Test
-	public void removeElseFromMethodTest(){}
+	public void removeElseNestedInConditionalExpressionTest(){
+		
+	}
 	
 	@Test
-	public void removeElseNestedInConditionalExpressionTest(){}
+	public void removeElseTwoLevelNestedConditionalExpressionTest(){
+		
+	}
 	
 	@Test
-	public void removeElseTwoLevelNestedConditionalExpressionTest(){}
+	public void removeElseFromLoopTest(){
+		
+	}
 	
 	@Test
-	public void removeElseFromLoopTest(){}
+	public void removeElseFromNestedLoopTest(){
+		
+	}
 	
 	@Test
-	public void removeElseFromNestedLoopTest(){}
-	
-	@Test
-	public void removeElseFromNestedLoopTwoLevelsTest(){}
-	
-	
-	
+	public void removeElseFromNestedLoopTwoLevelsTest(){
+		
+	}
 }

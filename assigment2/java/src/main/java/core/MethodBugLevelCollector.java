@@ -153,7 +153,7 @@ public class MethodBugLevelCollector {
 		counter++;
 		if (changes != null) {
 			//TODO Filter properly for case of parent method and child method
-			changes.stream().filter((change) -> !change.getParentEntity().getType().equals(JavaEntityType.CLASS))
+			changes.stream().filter((change) ->  change.getParentEntity().getType().equals(JavaEntityType.METHOD))
 					.forEach((methodChange) -> {
 						addMethodToMap(methodChange);
 						Key mapKey = new Key(methodChange.getParentEntity().getUniqueName());
