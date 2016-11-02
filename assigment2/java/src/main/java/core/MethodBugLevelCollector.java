@@ -5,6 +5,7 @@ import miner_pojos.CommitInfov2;
 import utils.GitReader;
 import utils.JiraExplore;
 import utils.JiraReader;
+import utils.TableOutput;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,21 +15,26 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
 import ch.uzh.ifi.seal.changedistiller.ChangeDistiller;
 import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
+import ch.uzh.ifi.seal.changedistiller.model.classifiers.ChangeType;
 import ch.uzh.ifi.seal.changedistiller.model.classifiers.EntityType;
 import ch.uzh.ifi.seal.changedistiller.model.classifiers.java.JavaEntityType;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
+import core.MethodBugLevelCollector.UpdatesForCommits;
 
 /**
  * Created by mey on 10/29/2016.
  */
 public class MethodBugLevelCollector {
 
+	private int counter;
+	
     final static Logger logger = Logger.getLogger(MethodBugLevelCollector.class);
     private Config config = Config.getInstace();
     private Path gitProjectPath;
@@ -36,7 +42,7 @@ public class MethodBugLevelCollector {
     private String fromDate;
     private Pattern issuePattern;
     private String jiraUrl;
-    private final Map<String,ChangeMetric> changeMetrics = new HashMap<String, ChangeMetric>();
+    private Map<Key,ChangeMetric> changeMetrics = new LinkedHashMap<Key, ChangeMetric>();
 
     public MethodBugLevelCollector(){
         this.gitProjectPath = Paths.get(config.getProjectPath());
@@ -76,7 +82,8 @@ public class MethodBugLevelCollector {
      */
     public void populateMetrics() throws IOException, InterruptedException {
             List<Path> javaFilesPaths = new ArrayList<>();
-            javaFilesPaths.addAll(GitReader.readGitJavaPaths(this.gitProjectPath));
+            String blackListPath = config.getBlackListPath();
+            javaFilesPaths.addAll(GitReader.readGitJavaPathsWithBlackList(this.gitProjectPath, blackListPath));
             //1) For All Java Paths
             javaFilesPaths.stream().forEach((path)->{
               //2) Get Commit History For Java File
@@ -138,35 +145,105 @@ public class MethodBugLevelCollector {
         updateChangeMetrics(fileInfo,changes);
         System.out.println("End Analyzing");
         System.out.println("*************");
-    }
+    } 
 
 	private void updateChangeMetrics(FileInfoHelper fileInfo, List<SourceCodeChange> changes) {
 		// Key is the Complete Method Path from Change Distiller
-		
+		final List<UpdatesForCommits> updatesForCommitsList = new ArrayList<>();
+		counter++;
 		if (changes != null) {
-			changes.stream()
-					.filter((change) -> change.getChangedEntity().getType().equals(JavaEntityType.METHOD)
-							|| change.getParentEntity().getType().equals(JavaEntityType.METHOD))
+			//TODO Filter properly for case of parent method and child method
+			changes.stream().filter((change) -> change.getParentEntity().getType().equals(JavaEntityType.METHOD))
 					.forEach((methodChange) -> {
 						addMethodToMap(methodChange);
-						this.changeMetrics.get(methodChange.getChangedEntity().getUniqueName())
+						Key mapKey = new Key(methodChange.getParentEntity().getUniqueName());
+						this.changeMetrics.get(new Key(methodChange.getParentEntity().getUniqueName()))
 								.updateMetricsPerChange(fileInfo, methodChange);
-						
+						//Changes per Commit
+						Optional<UpdatesForCommits> opt = updatesForCommitsList.stream()
+								.filter(p -> p.getMethodName().equals(mapKey)).findFirst();
+						if (opt.isPresent()) {
+							opt.get().update(methodChange);
+						} else {
+							UpdatesForCommits updatesForCommits = new UpdatesForCommits();
+							updatesForCommits.setMethodName(mapKey);
+							updatesForCommits.update(methodChange);
+							updatesForCommitsList.add(updatesForCommits);
+						}
 					});
+ 
+			// TODO Update Metrics per Commit
+			Optional<UpdatesForCommits> ufc = updatesForCommitsList.stream()
+					.filter(p -> this.changeMetrics.containsKey(p.getMethodName())).findFirst();
+			if (ufc.isPresent()) {
+				this.changeMetrics.get(ufc.get().getMethodName()).updateMetricsPerCommit(ufc.get());
+				// TODO Confirm where to add fix bug to which change method
+				if (fileInfo.commitFixBug) {
+					this.changeMetrics.get(ufc.get().getMethodName()).updateNumberOfBugs();
+				}
+			} else {
+				System.out.println("ERROR Method Should be Already Added");
+			}
 			
-			// Update Max for each Method
-			// Update Max Deleted
-			// Update Max Added
-			//TODO Update Metrics per Commit
-			//this.changeMetrics.get(methodChange.getChangedEntity().getUniqueName())
-			//.updateMetricsPerChange(fileInfo, methodChange);
+			if (counter > 30) {
+				// To see what the table looks like print it while doing
+				try {
+					createFile("results.csv", this.changeMetrics);
+					counter=0;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		
+		
+	}
+
+	private void createFile(String fileName, Map<Key, ChangeMetric> changeMetrics) throws IOException {
+		createPathIfNotExist(config.getTablePath());
+		Path path = Paths.get(config.getTablePath()+"\\"+fileName);
+		if (Files.exists(path)) {
+			Files.delete(path);
+		}
+		Files.createFile(path);
+		Charset charset = Charset.forName("US-ASCII");
+		BufferedWriter writer = Files.newBufferedWriter(path, charset);
+
+		String titles = "methodName,"+"methodHistories," + "authors," + "sumOfStmtAdded," + "maxStmtAdded," + "avgStmtAdded,"
+				+ "sumOfStmtDeleted," + "maxStmtDeleted," + "avgStmtDeleted," + "churn," + "maxChurn," + "avgChurn,"
+				+ "decl," + "cond," + "elseAdded," + "elseDeleted," + "numberOfBugs\n";
+		writer.write(titles+" \n");
+		 changeMetrics.entrySet();
+		 
+		 changeMetrics.entrySet().stream().forEach((m)->{
+			 try {
+				writer.write(m.getKey().toString() +","+ m.getValue().toString() + "\n");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				 
+		 });
+		 /*
+		Iterator it = changeMetrics.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			writer.write(pair.getKey().toString() +","+ pair.getValue().toString() + "\n");
+			it.remove(); //DANGER!! // avoids a ConcurrentModificationException
+		}*/
+		writer.flush();
+		writer.close();
 	}
 
 	private void addMethodToMap(SourceCodeChange methodChange) {
-		if (!this.changeMetrics.containsKey(methodChange.getChangedEntity().getUniqueName())) {
-			String key = methodChange.getChangedEntity().getUniqueName();
-			ChangeMetric changeMetric = new ChangeMetric();
+		String uniqueName = methodChange.getParentEntity().getUniqueName();
+		ChangeMetric changeMetric = new ChangeMetric(uniqueName); 
+		Key key = new Key(uniqueName);
+		if (!this.changeMetrics.containsKey(key)) {
+			//System.out.println("Change Entity Parent: "+methodChange.getParentEntity().getType());
+			//System.out.println("Changed Entity: "+methodChange.getChangedEntity().getUniqueName());
+			//System.out.println("Changed Entity Type: "+ methodChange.getChangedEntity().getType());
+			
 			this.changeMetrics.put(key, changeMetric);
 		}
 		//TODO Check for Renames and Create and Create a join of Renames to later merger or 
@@ -198,7 +275,8 @@ public class MethodBugLevelCollector {
     private boolean isBugFix(CommitInfov2 commitInfo) {
         String jiraId = commitInfo.getJiraId();
         logger.debug("IsBug: "+JiraExplore.isIssue(jiraId,this.issuePattern));
-        return JiraExplore.isIssue(jiraId,this.issuePattern) && JiraReader.IsBug(jiraId,jiraUrl);
+        System.out.println("Jira Message: "+ jiraId  +" IsBug: "+JiraExplore.isIssue(jiraId,this.issuePattern));
+        return JiraExplore.isIssue(jiraId,this.issuePattern);//JiraExplore.isIssue(jiraId,this.issuePattern) && JiraReader.IsBug(jiraId,jiraUrl);
     }
 
     private LinkedList<CommitInfov2> findCommitHistory(String fromDate, String toDate, Path javafilePath) throws IOException, InterruptedException {
@@ -249,7 +327,6 @@ public class MethodBugLevelCollector {
     		public FileInfoHelper(CommitInfov2 commitInfo, String fileBody){
     			this.commitInfo=commitInfo;
     			this.fileBody=fileBody;
-    			this.commitFixBug=commitFixBug;
     		}
     		
     		public FileInfoHelper(CommitInfov2 commitInfo, String fileBody, Boolean commitFixBug){
@@ -283,5 +360,123 @@ public class MethodBugLevelCollector {
 			}
     		
     	}
+    	
+    	
+    	public class UpdatesForCommits{
+    		//TODO Create a list of Methods Names
+    		private Key methodName;
+    		// Maximum number of source code statements added to a method body for
+    		// all method histories
+    		private int maxCodeStatementsAdded;
+    		// Maximum number of source code statements deleted from a method body
+    		// for all method histories
+    		private int maxMethodStatementsDeleted;
+
+    		// Maximum churn for all method histories
+    		private int maximunChurn;
+    		
+    		public void increaseMaxCodeStatementsAdded(){
+    			maxCodeStatementsAdded++;
+    			updateMaxChurn();
+    		}
+    		
+    		public void setMethodName(Key key) {
+				// TODO Auto-generated method stub
+				this.methodName=key;
+			}
+
+			public void update(SourceCodeChange methodChange) {
+			
+    			if (methodChange.getChangeType().equals(ChangeType.STATEMENT_INSERT)) {
+    				// Sum of all source code statements added to a method body over all
+    				// method histories
+    				this.maxCodeStatementsAdded++;
+    				// churn: Sum of stmtAdded - stmtDeleted over all method histories
+    				updateMaxChurn();
+    			}
+    			if (methodChange.getChangeType().equals(ChangeType.STATEMENT_DELETE)) {
+    				// Sum of all source code statements deleted from a method body over
+    				// all method histories
+    				this.maxMethodStatementsDeleted++;
+    				// churn: Sum of stmtAdded - stmtDeleted over all method histories
+    				updateMaxChurn();
+    			}
+    			
+			}
+
+			public void increaseMaxCodeStatementsDeleted(){
+    			maxMethodStatementsDeleted++;
+    			updateMaxChurn();
+    		}
+    		
+			private  void updateMaxChurn(){
+				this.maximunChurn=maxCodeStatementsAdded-maxMethodStatementsDeleted;
+			}
+
+
+			public Integer getMaxCodeStatements() {
+				return maxCodeStatementsAdded;
+			}
+			
+
+
+			public Integer getMaximunMethodStatementsDeleted() {
+				return maxMethodStatementsDeleted;
+			}
+
+
+			public Integer getMaximunChurn() {
+				return maximunChurn;
+			}
+
+			public Key getMethodName() {
+				return methodName;
+			}
+
+			
+    	}
+    	
+    	public class Key{
+    		
+    		@Override
+    		public String toString(){
+    			return methodName;
+    		}
+    		
+    		@Override
+			public int hashCode() {
+				final int prime = 31;
+				int result = 1;
+				result = prime * result + getOuterType().hashCode();
+				result = prime * result + ((methodName == null) ? 0 : methodName.hashCode());
+				return result;
+			}
+			@Override
+			public boolean equals(Object obj) {
+				if (this == obj)
+					return true;
+				if (obj == null)
+					return false;
+				if (!(obj instanceof Key))
+					return false;
+				Key other = (Key) obj;
+				if (!getOuterType().equals(other.getOuterType()))
+					return false;
+				if (methodName == null) {
+					if (other.methodName != null)
+						return false;
+				} else if (!methodName.equals(other.methodName))
+					return false;
+				return true;
+			}
+			String methodName;
+    		public Key(String key){
+    			this.methodName=key;
+    		}
+			private MethodBugLevelCollector getOuterType() {
+				return MethodBugLevelCollector.this;
+			}
+    	}
+    	
     	
 }

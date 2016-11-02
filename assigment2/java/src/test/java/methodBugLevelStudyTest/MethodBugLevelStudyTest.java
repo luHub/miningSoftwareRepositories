@@ -16,14 +16,14 @@ import java.io.IOException;
 public class MethodBugLevelStudyTest {
 
 
-    private MethodBugLevelCollector methodBugLevelCollector;
 
     @Before public void initialize() {
-        methodBugLevelCollector = new MethodBugLevelCollector();
+        
     }
 
     @Test
     public void populateMetrics() throws IOException, InterruptedException {
+    	 MethodBugLevelCollector methodBugLevelCollector = new MethodBugLevelCollector();
         methodBugLevelCollector.populateMetrics();
     }
     

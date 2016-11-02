@@ -17,7 +17,8 @@ public class Config {
     private String jiraUrl;
     private String javaV1Path;
     private String javaV2Path;
-
+    private String tablePath;
+    private String blackListPath;
 
 
 
@@ -32,14 +33,16 @@ public class Config {
         Properties studyProperties = new Properties();
         InputStream input  = getClass().getClassLoader().getResourceAsStream("config.properties");
         try {
-            studyProperties.load(input);
-            this.initDate=studyProperties.getProperty("initDate");
-            this.finalDate=studyProperties.getProperty("finalDate");
-            this.projectPath=studyProperties.getProperty("projectPath");
-            this.jiraIdPattern=studyProperties.getProperty("jiraIdPattern");
-            this.jiraUrl=studyProperties.getProperty("jiraUrl");
-            this.javaV1Path=studyProperties.getProperty("v1path");
-            this.javaV2Path=studyProperties.getProperty("v2path");
+			studyProperties.load(input);
+			this.initDate = studyProperties.getProperty("initDate");
+			this.finalDate = studyProperties.getProperty("finalDate");
+			this.projectPath = studyProperties.getProperty("projectPath");
+			this.jiraIdPattern = studyProperties.getProperty("jiraIdPattern");
+			this.jiraUrl = studyProperties.getProperty("jiraUrl");
+			this.javaV1Path = studyProperties.getProperty("v1path");
+			this.javaV2Path = studyProperties.getProperty("v2path");
+			this.tablePath = studyProperties.getProperty("tablePath");
+			this.blackListPath = studyProperties.getProperty("blackListPath");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,4 +81,13 @@ public class Config {
 	public void setJavaV2Path(String javaV2Path) {
 		this.javaV2Path = javaV2Path;
 	}
+	public String getTablePath() {
+		return tablePath;
+	}
+	public String getBlackListPath() {
+		return blackListPath;
+	}
+	public void setBlackListPath(String blackListPath) {
+		this.blackListPath = blackListPath;
+	}	
 }

@@ -70,6 +70,35 @@ public class GitReader {
 	 * @throws IOException 
 	 * @throws InterruptedException 
 	 */
+	
+	public static List<Path> readGitJavaPathsWithBlackList(Path gitProjectPath,String blackPaths) throws IOException, InterruptedException{
+		
+		List<Path> listOfPaths = new ArrayList<Path>();
+		String[] command = {"CMD", "/C", "git ls-files"};
+	    ProcessBuilder probuilder = new ProcessBuilder(command);
+	    probuilder.directory(gitProjectPath.toFile());
+	    Process process;
+            process = probuilder.start();
+            //Read out dir output
+            InputStream is = process.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+            String line;
+            while ((line = br.readLine()) != null) {
+            	if(PathFilters.checkPathFilterEnding(line,"java")&& !line.contains(blackPaths) ){
+					Path path = Paths.get(gitProjectPath+"\\"+line);
+					listOfPaths.add(path);
+                }
+            }
+            int exitValue = process.waitFor();
+            //Close InputStream
+            br.close();
+            isr.close();
+            process.destroy();
+            System.out.println("End javaFile List");
+	    return listOfPaths ;
+	    }
+	
 	public static List<Path> readGitJavaPaths(Path gitProjectPath) throws IOException, InterruptedException{
 		List<Path> listOfPaths = new ArrayList<Path>();
 		String[] command = {"CMD", "/C", "git ls-files"};

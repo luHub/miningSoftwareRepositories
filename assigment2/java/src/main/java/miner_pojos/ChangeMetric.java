@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.changedistiller.model.classifiers.ChangeType;
 import ch.uzh.ifi.seal.changedistiller.model.classifiers.java.JavaEntityType;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import core.MethodBugLevelCollector.FileInfoHelper;
+import core.MethodBugLevelCollector.UpdatesForCommits;
 
 public class ChangeMetric {
 
@@ -28,8 +29,10 @@ public class ChangeMetric {
 	private int elseDeleted;
 	private int numberOfBugs;
 	private List<String> commiterNameList = new ArrayList<>();
+	private String methodName;
 
-	public ChangeMetric() {
+	public ChangeMetric(String methodName) {
+		this.methodName=methodName;
 	}
 
 	public void increaseAuthor(String commiterName) {
@@ -39,33 +42,36 @@ public class ChangeMetric {
 		}
 	}
 
-	public void updateMetricsPerCommit(int maxChurn, int maxDeleted, int maxAdded) {
+	public void updateMetricsPerCommit(UpdatesForCommits updatesForCommits) {
 		// Maximum number of source code statements added to a method body for
 		// all method histories
-		updateMaximunSourceCodeStatementsAdded(maxAdded);
-
+		updateMaximunSourceCodeStatementsAdded(updatesForCommits.getMaxCodeStatements());
 		// Maximum number of source code statements deleted from a method body
 		// for all method histories
-		updateMaximunMethodStatementsDeleted(maxDeleted);
-
+		updateMaximunMethodStatementsDeleted(updatesForCommits.getMaximunMethodStatementsDeleted());
 		// Maximum churn for all method histories
-		updateMaximunChurn(maxChurn);
-	}
-
-	private void updateMaximunChurn(int maxChurn2) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void updateMaximunMethodStatementsDeleted(int maxDeleted) {
-		// TODO Auto-generated method stub
-		
+		updateMaximunChurn(updatesForCommits.getMaximunChurn());
 	}
 
 	private void updateMaximunSourceCodeStatementsAdded(int maxAdded) {
-		// TODO Auto-generated method stub
-		
+		if (maxAdded > this.maxStmtAdded) {
+			this.maxStmtAdded = maxAdded;
+		}
 	}
+
+	private void updateMaximunMethodStatementsDeleted(int maxDeleted) {
+		if (maxDeleted > this.maxStmtDeleted) {
+			this.maxStmtDeleted = maxDeleted;
+		}
+	}
+
+	private void updateMaximunChurn(int maxChurn) {
+		if (maxChurn > this.maxChurn) {
+			this.maxChurn = maxChurn;
+		}
+	}
+
+	
 
 	public void updateMetricsPerChange(FileInfoHelper fileInfo, SourceCodeChange change) {
 		
@@ -111,25 +117,30 @@ public class ChangeMetric {
 				|| change.getChangeType().equals(ChangeType.PARAMETER_TYPE_CHANGE)
 				|| change.getChangeType().equals(ChangeType.PARAMETER_RENAMING)
 				|| change.getChangeType().equals(ChangeType.PARAMETER_DELETE)
-				|| change.getChangeType().equals(ChangeType.PARAMETER_INSERT)) {
+				|| change.getChangeType().equals(ChangeType.PARAMETER_INSERT)
+				|| change.getChangeType().equals(ChangeType.METHOD_RENAMING)) {
 				this.decl++;
 		}
 		
 		// Number of condition expression changes in a method body over all
 		// revisions
-		if (change.getChangeType().equals(ChangeType.CONDITION_EXPRESSION_CHANGE)){
+		if (change.getChangeType().equals(ChangeType.CONDITION_EXPRESSION_CHANGE)) {
 			this.cond++;
 		}
 
 		// Number of added else-parts in a method body over all revisions
-		if (change.getChangeType().equals(ChangeType.STATEMENT_INSERT)
-				&& change.getChangedEntity().equals(JavaEntityType.ELSE_STATEMENT)) {
-			this.elseDeleted++;
+		if ((change.getChangeType().equals(ChangeType.STATEMENT_INSERT)
+				|| change.getChangeType().equals(ChangeType.ALTERNATIVE_PART_INSERT))
+				&& (change.getChangedEntity().getType().equals(JavaEntityType.ELSE_STATEMENT)
+						|| change.getChangedEntity().equals(JavaEntityType.ELSE_STATEMENT))) {
+			this.elseAdded++;
 		}
 
 		// Number of deleted else-parts from a method body over all revisions
-		if (change.getChangeType().equals(ChangeType.STATEMENT_DELETE)
-				&& change.getChangedEntity().equals(JavaEntityType.ELSE_STATEMENT)) {
+		if ((change.getChangeType().equals(ChangeType.STATEMENT_DELETE)
+				|| change.getChangeType().equals(ChangeType.ALTERNATIVE_PART_DELETE))
+				&& (change.getChangedEntity().getType().equals(JavaEntityType.ELSE_STATEMENT)
+						|| change.getChangedEntity().equals(JavaEntityType.ELSE_STATEMENT))) {
 			this.elseDeleted++;
 		}
 
@@ -162,5 +173,16 @@ public class ChangeMetric {
 
 	private void updateChurn() {
 		this.churn = this.sumOfStmtAdded - this.sumOfStmtDeleted;
+	}
+	
+	public void updateNumberOfBugs(){
+		this.numberOfBugs++;
+	}
+
+	@Override
+	public String toString() {
+		return methodHistories +","+ authors +","+ sumOfStmtAdded +","+maxStmtAdded+","+avgStmtAdded
+				+","+sumOfStmtDeleted+","+maxStmtDeleted+","+avgStmtDeleted+","+churn+","+maxChurn+","+avgChurn+","
+				+decl+","+cond+","+elseAdded+","+elseDeleted+","+numberOfBugs;
 	}
 }

@@ -2,6 +2,8 @@ package core;
 
 import ch.uzh.ifi.seal.changedistiller.ChangeDistiller;
 import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
+import ch.uzh.ifi.seal.changedistiller.model.classifiers.ChangeType;
+import ch.uzh.ifi.seal.changedistiller.model.classifiers.java.JavaEntityType;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 
 import java.io.File;
@@ -64,6 +66,24 @@ public class ExampleDistiller {
         		System.out.println("****");
                 System.out.println("**");
                 System.out.println("*");
+                
+                
+                if ((change.getChangeType().equals(ChangeType.STATEMENT_INSERT)
+        				|| change.getChangeType().equals(ChangeType.ALTERNATIVE_PART_INSERT))
+        				&& (change.getChangedEntity().getAssociatedEntities().equals(JavaEntityType.ELSE_STATEMENT)
+        						|| change.getChangedEntity().equals(JavaEntityType.ELSE_STATEMENT))) {
+                	System.out.println("*****************ELSE INSERT***********************");
+                }
+
+        		// Number of deleted else-parts from a method body over all revisions
+        		if ((change.getChangeType().equals(ChangeType.STATEMENT_DELETE)
+        				|| change.getChangeType().equals(ChangeType.ALTERNATIVE_PART_DELETE))
+        				&& (change.getChangedEntity().getType().equals(JavaEntityType.ELSE_STATEMENT)
+        						|| change.getChangedEntity().equals(JavaEntityType.ELSE_STATEMENT))) {
+                	System.out.println("******************ELSE DELETE***********************");
+
+        		}
+                
         		
             }
             System.out.println("End");
