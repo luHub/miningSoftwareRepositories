@@ -46,34 +46,6 @@ public class MethodBugLevelCollector {
         this.jiraUrl=config.getJiraUrl();
     }
 
-    /**
-     * 1) Get all java files from git repository:
-
-     1.1) Run readGitPaths method.
-     1.2) Put into a List the Paths.
-
-     2) For every file get commit history with git log command for a certain period
-
-     2.1) Run git log from Data init to Date Final
-     2.2) Return  a List of Commits
-
-     3) we filter this list of commits history with jira to take only those that fix bug
-
-     3.1) ForEach (commit) in List from (1):
-
-     3.1.1) Parse (commit) and get Issue-Id
-     3.1.2) Go to Jira with Issue-Id
-     3.1.3) if Jira Tag is Bug then add (commit) to CommitFixBugList
-
-     4) Change Distiller Part:
-
-     4.1) For every (fixedCommit) in commitFixList:
-     4.1.1)  From (fixedCommit) take its hash and with git show the version of the file.
-     4.1.2)  From the File List(Linked) of Commits get the previous commit of (fixedCommit).
-     4.1.3) Use ChangeDistiller to see if the change was at method level.
-     4.1.4) if the difference was at method Level:
-
-     */
     public void populateMetrics() throws IOException, InterruptedException {
             List<Path> javaFilesPaths = new ArrayList<>();
             String blackListPath = config.getBlackListPath();
