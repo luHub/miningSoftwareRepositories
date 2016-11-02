@@ -153,7 +153,7 @@ public class MethodBugLevelCollector {
 		counter++;
 		if (changes != null) {
 			//TODO Filter properly for case of parent method and child method
-			changes.stream().filter((change) -> change.getParentEntity().getType().equals(JavaEntityType.METHOD))
+			changes.stream().filter((change) -> !change.getParentEntity().getType().equals(JavaEntityType.CLASS))
 					.forEach((methodChange) -> {
 						addMethodToMap(methodChange);
 						Key mapKey = new Key(methodChange.getParentEntity().getUniqueName());
@@ -217,7 +217,7 @@ public class MethodBugLevelCollector {
 		 
 		 changeMetrics.entrySet().stream().forEach((m)->{
 			 try {
-				writer.write(m.getKey().toString() +","+ m.getValue().toString() + "\n");
+				writer.write(m.getKey().toString().replaceAll(",", "::") +","+ m.getValue().toString() + "\n");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -477,6 +477,4 @@ public class MethodBugLevelCollector {
 				return MethodBugLevelCollector.this;
 			}
     	}
-    	
-    	
 }
