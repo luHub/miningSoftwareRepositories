@@ -335,6 +335,10 @@ public class MethodBugLevelCollector {
     			this.commitFixBug=commitFixBug;
     		}
 
+			public FileInfoHelper() {
+				// TODO Auto-generated constructor stub
+			}
+
 			public CommitInfov2 getCommitInfo() {
 				return commitInfo;
 			}

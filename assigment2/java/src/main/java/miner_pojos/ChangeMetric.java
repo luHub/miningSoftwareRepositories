@@ -35,6 +35,10 @@ public class ChangeMetric {
 		this.methodName=methodName;
 	}
 
+	public ChangeMetric() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void increaseAuthor(String commiterName) {
 		if (!this.commiterNameList.contains(commiterName)) {
 			this.commiterNameList.add(commiterName);
@@ -184,5 +188,21 @@ public class ChangeMetric {
 		return methodHistories +","+ authors +","+ sumOfStmtAdded +","+maxStmtAdded+","+avgStmtAdded
 				+","+sumOfStmtDeleted+","+maxStmtDeleted+","+avgStmtDeleted+","+churn+","+maxChurn+","+avgChurn+","
 				+decl+","+cond+","+elseAdded+","+elseDeleted+","+numberOfBugs;
+	}
+
+	public int getElseAdded() {
+		return elseAdded;
+	}
+
+	public void setElseAdded(int elseAdded) {
+		this.elseAdded = elseAdded;
+	}
+
+	public int getElseDeleted() {
+		return elseDeleted;
+	}
+
+	public void setElseDeleted(int elseDeleted) {
+		this.elseDeleted = elseDeleted;
 	}
 }
