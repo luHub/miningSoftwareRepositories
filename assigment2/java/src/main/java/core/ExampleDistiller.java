@@ -60,7 +60,7 @@ public class ExampleDistiller {
         		System.out.println("Changes Entity Source Range: " + change.getChangedEntity().getSourceRange());
         		System.out.println("Changes Entity Modifiers: " + change.getChangedEntity().getModifiers());
         		System.out.println("Changes Entity Associated Entities: " + change.getChangedEntity().getAssociatedEntities());
-        		System.out.println("Changes Entity Associated Type: " + change.getChangedEntity().getType());
+        		System.out.println("Changes Entity  Type: " + change.getChangedEntity().getType());
         		System.out.println("Changes Type: " + change.getChangeType());
         		System.out.println("Changes Label: " + change.getLabel());
         		System.out.println("****");
@@ -70,7 +70,7 @@ public class ExampleDistiller {
                 
                 if ((change.getChangeType().equals(ChangeType.STATEMENT_INSERT)
         				|| change.getChangeType().equals(ChangeType.ALTERNATIVE_PART_INSERT))
-        				&& (change.getChangedEntity().getAssociatedEntities().equals(JavaEntityType.ELSE_STATEMENT)
+                		&& (change.getChangedEntity().getType().equals(JavaEntityType.ELSE_STATEMENT)
         						|| change.getChangedEntity().equals(JavaEntityType.ELSE_STATEMENT))) {
                 	System.out.println("*****************ELSE INSERT***********************");
                 }
