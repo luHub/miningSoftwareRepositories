@@ -487,7 +487,7 @@ public class MethodBugLevelCollector {
 			}
 			String methodName;
     		public Key(String key){
-    			this.methodName=key;
+    			this.methodName=key.split("\\(")[0]; 
     		}
     		
     		public Key(Key key){
