@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import core.Config;
+
 
 public class GitReader {
 
@@ -229,9 +231,14 @@ public class GitReader {
         int HASH_CODE = 0;
         int COMMITER = 1;
         int JIRA_ID=2;
+        int COMMIT_DATE=3;
+
+        String since = Config.getInstace().getInitDate();
+        String until = Config.getInstace().getFinalDate();
+        
 		LinkedList<CommitInfov2> commitsList = new LinkedList<>();
-		String format = "%H,,,%an,,,%s";
-		String[] command ={"CMD", "/C", "git log --pretty="+format+" "+ path.toString().replaceAll("\\\\","/")};
+		String format = "%H,,,%an,,,%s,,,%cd";
+		String[] command ={"CMD", "/C", "git log --pretty="+format+" "+"--since=" +"\""+since+" \""+" --until="+"\""+until+"\" -- "+ path.toString().replaceAll("\\\\","/")};
 		ProcessBuilder probuilder = new ProcessBuilder(command);
 		probuilder.directory(new File(projectPath.toString()));
 		Process process;
@@ -243,7 +250,7 @@ public class GitReader {
 		String line;
 		while ((line = br.readLine()) != null) {
 			String[] splitLine = line.split(",,,");
-			commitsList.add(new CommitInfov2(splitLine[HASH_CODE],splitLine[JIRA_ID].replace(":",""),path,splitLine[COMMITER]));
+			commitsList.add(new CommitInfov2(splitLine[HASH_CODE],splitLine[JIRA_ID].replace(":",""),path,splitLine[COMMITER],splitLine[COMMIT_DATE]));
 			
 		}
 		int exitValue = process.waitFor();

@@ -11,8 +11,16 @@ public class CommitInfov2 {
     private String jiraId;
     private String CommitBody;
 	private String commiterName;
-
-    public CommitInfov2(){}
+	private String commitDate;
+	
+    public CommitInfov2(String hash,String jiraId,Path filePath,String commiterName, String date){
+    	this.hash=hash;
+        this.jiraId=jiraId;
+        this.filePath=filePath;
+        this.commiterName=commiterName;
+        this.commitDate=date; 	
+    	
+    }
     public CommitInfov2(String hash){
         this.hash=hash;
     }
@@ -23,7 +31,10 @@ public class CommitInfov2 {
         this.commiterName=commiterName;
     }
 
-    public String getHash() {
+    public CommitInfov2() {
+		// TODO Auto-generated constructor stub
+	}
+	public String getHash() {
         return hash;
     }
 
@@ -64,5 +75,11 @@ public class CommitInfov2 {
 	}
 	public void setCommiterName(String commiterName) {
 		this.commiterName = commiterName;
+	}
+	public String getCommitDate() {
+		return commitDate;
+	}
+	public void setCommitDate(String commitDate) {
+		this.commitDate = commitDate;
 	}
 }

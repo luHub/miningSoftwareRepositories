@@ -109,7 +109,8 @@ public class MethodBugLevelCollector {
 		File fileprevious = createFile(filePreviousInfo,previousFilePath); 
 		
 		System.out.println("Analizing File: "+fileInfo.getCommitInfo().getFileName()+" VS "+filePreviousInfo.getCommitInfo().getFileName());
-		System.out.println("Commit Hast: "+fileInfo.getCommitInfo().getHash()+" VS "+filePreviousInfo.getCommitInfo().getHash());
+		System.out.println("Commit Hash: "+fileInfo.getCommitInfo().getHash()+" VS "+filePreviousInfo.getCommitInfo().getHash());
+		System.out.println("Commit Date: "+fileInfo.getCommitInfo().getCommitDate());
 		
 		//Call Change Distiller
 		List<SourceCodeChange> changes = runChangeDistiller(file, fileprevious);
