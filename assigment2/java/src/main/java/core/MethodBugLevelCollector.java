@@ -222,7 +222,9 @@ public class MethodBugLevelCollector {
 		Files.createFile(path);
 		Charset charset = Charset.forName("US-ASCII");
 		BufferedWriter writer = Files.newBufferedWriter(path, charset);
-
+		
+		String dataInfo="From: "+config.getInitDate()+"\t To: "+config.getFinalDate();
+		writer.write(dataInfo+" \n");
 		String titles = "methodName,"+"methodHistories," + "authors," + "sumOfStmtAdded," + "maxStmtAdded," + "avgStmtAdded,"
 				+ "sumOfStmtDeleted," + "maxStmtDeleted," + "avgStmtDeleted," + "churn," + "maxChurn," + "avgChurn,"
 				+ "decl," + "cond," + "elseAdded," + "elseDeleted," + "numberOfBugs\n";
