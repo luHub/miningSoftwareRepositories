@@ -14,6 +14,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import org.apache.log4j.Logger;
 
 import ch.uzh.ifi.seal.changedistiller.ChangeDistiller;
@@ -21,6 +23,8 @@ import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
 import ch.uzh.ifi.seal.changedistiller.model.classifiers.ChangeType;
 import ch.uzh.ifi.seal.changedistiller.model.classifiers.java.JavaEntityType;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
+import ch.uzh.ifi.seal.changedistiller.model.entities.Update;
+import junit.framework.Assert;
 
 /**
  * Created by mey on 10/29/2016.
@@ -50,7 +54,7 @@ public class MethodBugLevelCollector {
             List<Path> javaFilesPaths = new ArrayList<>();
             String blackListPath = config.getBlackListPath();
             javaFilesPaths.addAll(GitReader.readGitJavaPathsWithBlackList(this.gitProjectPath, blackListPath));
-            //1) For All Java Paths
+            
             javaFilesPaths.stream().forEach((path)->{
               //2) Get Commit History For Java File
                 final LinkedList<CommitInfov2> commitListHisotry;
@@ -68,8 +72,9 @@ public class MethodBugLevelCollector {
         }
         });
             //5 End Distilling
-            System.out.println("Program Finished");
-        }
+		System.out.println("Program Finished: Bugs Number: "
+				+ this.changeMetrics.entrySet().stream().mapToInt((k) -> k.getValue().getBugs()).sum());
+	}
 
 	private void compareFileVersions(Path path, final LinkedList<CommitInfov2> commitListHisotry,
 			CommitInfov2 commit) {
@@ -110,6 +115,7 @@ public class MethodBugLevelCollector {
 		List<SourceCodeChange> changes = runChangeDistiller(file, fileprevious);
         updateChangeMetrics(fileInfo,changes);
         System.out.println("End Analyzing");
+        System.out.println("Bugs Number: " + this.changeMetrics.entrySet().stream().mapToInt((k) -> k.getValue().getBugs()).sum());
         System.out.println("*************");
     } 
 
@@ -119,22 +125,43 @@ public class MethodBugLevelCollector {
 		counter++;
 		if (changes != null) {
 			//TODO Filter properly for case of parent method and child method
-			changes.stream().filter((change) ->  change.getRootEntity().getType().equals(JavaEntityType.METHOD)|| change.getParentEntity().getType().equals(JavaEntityType.METHOD))
-					.forEach((methodChange) -> {
-						Key mapKey;
+			changes.stream().filter((change) ->  change.getRootEntity().getType().equals(JavaEntityType.METHOD)
+					|| change.getParentEntity().getType().equals(JavaEntityType.METHOD)
+	   		        || change.getChangedEntity().getType().equals(JavaEntityType.METHOD))		
+			.forEach((methodChange) -> {
+						Key mapKey = null;
 						if(methodChange.getRootEntity().getType().equals(JavaEntityType.METHOD)){
+							
 							 mapKey = new Key(methodChange.getRootEntity().getUniqueName());
-							addMethodToMap(methodChange,mapKey,methodChange.getRootEntity().getUniqueName());
-						}else{
-							System.out.println("Unique Name for Analysis: "+methodChange.getParentEntity().getUniqueName());
+							if (methodChange.getChangeType().equals(ChangeType.METHOD_RENAMING)
+											&& methodChange instanceof Update) {
+								mapKey = updateKeyInMethodStatementChange(methodChange, this.changeMetrics,
+										updatesForCommitsList);
+							}
+							 addMethodToMap(methodChange,mapKey,methodChange.getRootEntity().getUniqueName());
+						}else if(methodChange.getParentEntity().getType().equals(JavaEntityType.METHOD)){
 							 mapKey = new Key(methodChange.getParentEntity().getUniqueName());
-							addMethodToMap(methodChange,mapKey,methodChange.getParentEntity().getUniqueName());
+							if (methodChange.getChangeType().equals(ChangeType.METHOD_RENAMING)
+											&& methodChange instanceof Update) {
+								mapKey = updateKeyInMethodStatementChange(methodChange, this.changeMetrics,
+										updatesForCommitsList);
+							}
+							 addMethodToMap(methodChange,mapKey,methodChange.getParentEntity().getUniqueName());
+						}else if(methodChange.getChangedEntity().getType().equals(JavaEntityType.METHOD)){
+							 mapKey = new Key(methodChange.getChangedEntity().getUniqueName());
+							if (methodChange.getChangeType().equals(ChangeType.METHOD_RENAMING)
+											&& methodChange instanceof Update) {
+								mapKey = updateKeyInMethodStatementChange(methodChange, this.changeMetrics,
+										updatesForCommitsList);
+							}
+							 addMethodToMap(methodChange,mapKey,methodChange.getParentEntity().getUniqueName());
 						}
 						this.changeMetrics.get(mapKey)
 								.updateMetricsPerChange(fileInfo, methodChange);
 						//Changes per Commit
+						Key mk = new Key(mapKey);
 						Optional<UpdatesForCommits> opt = updatesForCommitsList.stream()
-								.filter(p -> p.getMethodName().equals(mapKey)).findFirst();
+								.filter(p -> p.getMethodName().equals(mk)).findFirst();
 						if (opt.isPresent()) {
 							opt.get().update(methodChange);
 						} else {
@@ -146,19 +173,15 @@ public class MethodBugLevelCollector {
 					});
  
 			// TODO Update Metrics per Commit
-			Optional<UpdatesForCommits> ufc = updatesForCommitsList.stream()
-					.filter(p -> this.changeMetrics.containsKey(p.getMethodName())).findFirst();
-			if (ufc.isPresent()) {
-				this.changeMetrics.get(ufc.get().getMethodName()).updateMetricsPerCommit(ufc.get());
+			updatesForCommitsList.stream().filter(ufc -> this.changeMetrics.containsKey(ufc.getMethodName())).forEach(p->{
+				this.changeMetrics.get(p.getMethodName()).updateMetricsPerCommit(p);
 				// TODO Confirm where to add fix bug to which change method
 				if (fileInfo.commitFixBug) {
-					this.changeMetrics.get(ufc.get().getMethodName()).updateNumberOfBugs();
+					this.changeMetrics.get(p.getMethodName()).updateNumberOfBugs();
 				}
-			} else {
-				System.out.println("No Changes at Method Level");
-			}
+			});
 			
-			if (counter > 30) {
+			if (counter > 1) {
 				// To see what the table looks like print it while doing
 				try {
 					createFile("results.csv", this.changeMetrics);
@@ -170,6 +193,24 @@ public class MethodBugLevelCollector {
 		}
 		
 		
+	}
+	
+	private Key updateKeyInMethodStatementChange(SourceCodeChange methodChange, Map<Key, ChangeMetric> changeMetrics,
+			List<UpdatesForCommits> updatesForCommitsList) {
+		final Key newMapKey = new Key(((Update) methodChange).getNewEntity().getUniqueName());
+		final Key oldMapKey = new Key(((Update) methodChange).getChangedEntity().getUniqueName());
+
+		if (changeMetrics.containsKey(oldMapKey)) {
+			ChangeMetric cm = this.changeMetrics.get(oldMapKey);
+			this.changeMetrics.remove(oldMapKey);
+			this.changeMetrics.put(newMapKey, cm);
+		}
+		for (UpdatesForCommits upc : updatesForCommitsList) {
+			if (upc.getMethodName().equals(oldMapKey)) {
+				upc.setMethodName(newMapKey);
+			}
+		}
+		return newMapKey;
 	}
 
 	private void createFile(String fileName, Map<Key, ChangeMetric> changeMetrics) throws IOException {
@@ -448,6 +489,11 @@ public class MethodBugLevelCollector {
     		public Key(String key){
     			this.methodName=key;
     		}
+    		
+    		public Key(Key key){
+    			this.methodName=key.methodName;
+    		}
+    		
 			private MethodBugLevelCollector getOuterType() {
 				return MethodBugLevelCollector.this;
 			}

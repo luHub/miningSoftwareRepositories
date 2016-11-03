@@ -164,15 +164,15 @@ public class ChangeMetric {
 	}
 
 	private void updateAverageChurn() {
-		this.avgChurn = (double) this.churn / (double) this.methodHistories;
+		this.avgChurn = Math.abs((double) this.churn / (double) this.methodHistories);
 	}
 
 	private void updateAverageStatementsDeleted() {
-		this.avgStmtDeleted = (double) this.sumOfStmtDeleted / (double) this.methodHistories;
+		this.avgStmtDeleted = Math.abs((double) this.sumOfStmtDeleted / (double) this.methodHistories);
 	}
 
 	private void updateAverageStatementsAdded() {
-		this.avgStmtAdded = (double) this.sumOfStmtAdded / (double) this.methodHistories;
+		this.avgStmtAdded = Math.abs((double) this.sumOfStmtAdded / (double) this.methodHistories);
 	}
 
 	private void updateChurn() {
@@ -204,5 +204,18 @@ public class ChangeMetric {
 
 	public void setElseDeleted(int elseDeleted) {
 		this.elseDeleted = elseDeleted;
+	}
+
+	public int getDecl() {
+		return decl;
+	}
+
+	public void setDecl(int decl) {
+		this.decl = decl;
+	}
+
+	public int getBugs() {
+		// TODO Auto-generated method stub
+		return numberOfBugs;
 	}
 }

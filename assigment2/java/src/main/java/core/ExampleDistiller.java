@@ -63,6 +63,7 @@ public class ExampleDistiller {
         		System.out.println("Changes Entity  Type: " + change.getChangedEntity().getType());
         		System.out.println("Changes Type: " + change.getChangeType());
         		System.out.println("Changes Label: " + change.getLabel());
+//        		System.out.println("Changes Label: " + change.getParentEntity().get);
         		System.out.println("****");
                 System.out.println("**");
                 System.out.println("*");
