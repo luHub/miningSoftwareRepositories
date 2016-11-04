@@ -13,12 +13,13 @@ public class Config {
     private String initDate;
     private String finalDate;
     private String projectPath;
-    private String jiraIdPattern;
+    private String jiraIssuePattern;
     private String jiraUrl;
     private String javaV1Path;
     private String javaV2Path;
     private String tablePath;
     private String blackListPath;
+	private String jiraId;
 
 
 
@@ -37,7 +38,8 @@ public class Config {
 			this.initDate = studyProperties.getProperty("initDate");
 			this.finalDate = studyProperties.getProperty("finalDate");
 			this.projectPath = studyProperties.getProperty("projectPath");
-			this.jiraIdPattern = studyProperties.getProperty("jiraIdPattern");
+			this.jiraIssuePattern = studyProperties.getProperty("commitMessagePattern");
+			this.jiraId = studyProperties.getProperty("jiraId");
 			this.jiraUrl = studyProperties.getProperty("jiraUrl");
 			this.javaV1Path = studyProperties.getProperty("v1path");
 			this.javaV2Path = studyProperties.getProperty("v2path");
@@ -63,7 +65,7 @@ public class Config {
     }
 
     public String getJiraIssuePattern() {
-        return this.jiraIdPattern;
+        return this.jiraIssuePattern;
     }
 
     public String getJiraUrl() {
@@ -89,5 +91,11 @@ public class Config {
 	}
 	public void setBlackListPath(String blackListPath) {
 		this.blackListPath = blackListPath;
+	}
+	public String getJiraId() {
+		return jiraId;
+	}
+	public void setJiraId(String jiraId) {
+		this.jiraId = jiraId;
 	}	
 }

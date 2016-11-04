@@ -228,16 +228,16 @@ public class GitReader {
 	 * Git Commit List from each File
 	 */
 	public static LinkedList<CommitInfov2> getCommitsFromFile(Path projectPath, Path path) throws IOException, InterruptedException {
-        int HASH_CODE = 0;
-        int COMMITER = 1;
-        int JIRA_ID=2;
-        int COMMIT_DATE=3;
-
+        final int HASH_CODE = 0;
+        final int COMMITER = 1;
+        final int COMMIT_DATE=2;
+        final int COMMIT_MESSAGE=3;
+        
         String since = Config.getInstace().getInitDate();
         String until = Config.getInstace().getFinalDate();
         
 		LinkedList<CommitInfov2> commitsList = new LinkedList<>();
-		String format = "%H,,,%an,,,%s,,,%cd";
+		String format = "%H,,,%an,,,%cd,,,%B:::";
 		String[] command ={"CMD", "/C", "git log --pretty="+format+" "+"--since=" +"\""+since+" \""+" --until="+"\""+until+"\" -- "+ path.toString().replaceAll("\\\\","/")};
 		ProcessBuilder probuilder = new ProcessBuilder(command);
 		probuilder.directory(new File(projectPath.toString()));
@@ -248,20 +248,32 @@ public class GitReader {
 		InputStreamReader isr = new InputStreamReader(is);
 		BufferedReader br = new BufferedReader(isr);
 		String line;
+		StringBuffer srtbuilder = new StringBuffer();
 		while ((line = br.readLine()) != null) {
-			String[] splitLine = line.split(",,,");
-			commitsList.add(new CommitInfov2(splitLine[HASH_CODE],splitLine[JIRA_ID].replace(":",""),path,splitLine[COMMITER],splitLine[COMMIT_DATE]));
-			
+		srtbuilder.append(line);
 		}
-		int exitValue = process.waitFor();
+		
+		process.waitFor();
 		//Close InputStream
 		br.close();
 		isr.close();
 		process.destroy();
+		
+		if (srtbuilder.length() > 0) {
+			String[] splitCommits = srtbuilder.toString().split(":::");
+			for (String commit : splitCommits) {
+				String[] splitLine = commit.toString().split(",,,");
+				commitsList.add(new CommitInfov2(splitLine[HASH_CODE], splitLine[COMMIT_MESSAGE].replace(":", ""), path,
+						splitLine[COMMITER], splitLine[COMMIT_DATE]));
+			}
+		}
+		
+		
+		
         return  commitsList;
 	}
 
-    public static String gitGetFileVersion(Path projectPath, CommitInfov2 commitInfov2)  throws IOException, InterruptedException  {
+	public static String gitGetFileVersion(Path projectPath, CommitInfov2 commitInfov2)  throws IOException, InterruptedException  {
 		//Relative Path
 		String relative = projectPath.toFile().toURI().relativize(commitInfov2.getPath().toFile().toURI()).getPath();
         String[] command ={"CMD", "/C", "git show "+ commitInfov2.getHash()+":./"+ relative.replaceAll("\\\\","/")};

@@ -8,25 +8,25 @@ import java.nio.file.Path;
 public class CommitInfov2 {
     private Path filePath;
     private String hash;
-    private String jiraId;
+    private String commitMessage;
     private String CommitBody;
 	private String commiterName;
 	private String commitDate;
 	
-    public CommitInfov2(String hash,String jiraId,Path filePath,String commiterName, String date){
+    public CommitInfov2(String hash,String commitMessage,Path filePath,String commiterName, String date){
     	this.hash=hash;
-        this.jiraId=jiraId;
+        this.commitMessage=commitMessage;
         this.filePath=filePath;
         this.commiterName=commiterName;
-        this.commitDate=date; 	
-    	
+        this.commitDate=date;
+      
     }
     public CommitInfov2(String hash){
         this.hash=hash;
     }
-    public CommitInfov2(String hash,String jiraId,Path filePath,String commiterName){
+    public CommitInfov2(String hash,String commitMessage,Path filePath,String commiterName){
         this.hash=hash;
-        this.jiraId=jiraId;
+        this.commitMessage=commitMessage;
         this.filePath=filePath;
         this.commiterName=commiterName;
     }
@@ -47,13 +47,7 @@ public class CommitInfov2 {
     }
 
 
-    public String getJiraId() {
-        return jiraId;
-    }
-
-    public void setJiraId(String jiraId) {
-        this.jiraId = jiraId;
-    }
+    
 
     public Path getPath() {
     return filePath;
@@ -81,5 +75,11 @@ public class CommitInfov2 {
 	}
 	public void setCommitDate(String commitDate) {
 		this.commitDate = commitDate;
+	}
+	public String getCommitMessage() {
+		return commitMessage;
+	}
+	public void setCommitMessage(String commitMessage) {
+		this.commitMessage = commitMessage;
 	}
 }

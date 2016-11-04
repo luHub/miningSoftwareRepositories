@@ -176,7 +176,7 @@ public class ChangeMetric {
 	}
 
 	private void updateChurn() {
-		this.churn = this.sumOfStmtAdded - this.sumOfStmtDeleted;
+		this.churn =  this.sumOfStmtAdded + this.sumOfStmtDeleted;
 	}
 	
 	public void updateNumberOfBugs(){

@@ -4,6 +4,7 @@ import miner_pojos.ChangeMetric;
 import miner_pojos.CommitInfov2;
 import utils.GitReader;
 import utils.JiraExplore;
+import utils.JiraReader;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -39,6 +41,7 @@ public class MethodBugLevelCollector {
     private String toDate;
     private String fromDate;
     private Pattern issuePattern;
+    private Pattern jiraId;
     private String jiraUrl;
     private Map<Key,ChangeMetric> changeMetrics = new LinkedHashMap<Key, ChangeMetric>();
 
@@ -47,6 +50,7 @@ public class MethodBugLevelCollector {
         this.fromDate=config.getInitDate();
         this.toDate=config.getFinalDate();
         this.issuePattern=Pattern.compile(config.getJiraIssuePattern());
+        this.jiraId=Pattern.compile(config.getJiraId());
         this.jiraUrl=config.getJiraUrl();
     }
 
@@ -288,13 +292,25 @@ public class MethodBugLevelCollector {
     }
 
     private boolean isBugFix(CommitInfov2 commitInfo) {
-        String jiraId = commitInfo.getJiraId();
-        logger.debug("IsBug: "+JiraExplore.isIssue(jiraId,this.issuePattern));
+        String jiraId = extractJiraId(commitInfo.getCommitMessage());
+        String commitMessage = commitInfo.getCommitMessage();
+        logger.debug("IsBug: "+JiraExplore.isIssue(commitMessage,this.issuePattern));
         System.out.println("Jira Message: "+ jiraId  +" IsBug: "+JiraExplore.isIssue(jiraId,this.issuePattern));
-        return JiraExplore.isIssue(jiraId,this.issuePattern);//JiraExplore.isIssue(jiraId,this.issuePattern) && JiraReader.IsBug(jiraId,jiraUrl);
+        
+        //First check if is an issue in jira then in the commit message
+        return (!jiraId.isEmpty() && JiraReader.IsBug(jiraId,jiraUrl)) || JiraExplore.isIssue(commitMessage,this.issuePattern) ;
     }
 
-    private LinkedList<CommitInfov2> findCommitHistory(String fromDate, String toDate, Path javafilePath) throws IOException, InterruptedException {
+	private String extractJiraId(String commitMessage) {
+		String x = "";
+		Matcher m = this.jiraId.matcher(commitMessage);
+		if (m.find()) {
+			x = m.group();
+		}
+		return x;
+	}
+
+	private LinkedList<CommitInfov2> findCommitHistory(String fromDate, String toDate, Path javafilePath) throws IOException, InterruptedException {
             return GitReader.getCommitsFromFile(this.gitProjectPath,javafilePath);
     }
 
